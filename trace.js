@@ -1,1 +1,24 @@
-!function(){var e=function(e){return document.getElementById(e)},t=["Letter for","Letter from","Title","Letter text","Sign-off","Question","Line shown after yes"];e("go").addEventListener("click",function(){var n=e("lnk").value.trim(),r=/#l=([A-Za-z0-9_-]+)/.exec(n)||/^([A-Za-z0-9_-]{20,})$/.exec(n);if(e("out").hidden=!0,!r)return e("msg").textContent="That does not look like a letter link. It should contain #l= followed by letters and numbers.",void(e("msg").className="msg err");try{var o=function(e){for(e=e.replace(/-/g,"+").replace(/_/g,"/");e.length%4;)e+="=";for(var t=atob(e),n=new Uint8Array(t.length),r=0;r<t.length;r++)n[r]=t.charCodeAt(r);return JSON.parse((new TextDecoder).decode(n))}(r[1]),a=e("dl");a.textContent="",t.forEach(function(e,t){var n=document.createElement("dt");n.style.fontWeight="800",n.textContent=e;var r=document.createElement("dd");r.style.margin="0",r.style.whiteSpace="pre-wrap",r.style.overflowWrap="anywhere",r.textContent=String(o[t]||""),a.appendChild(n),a.appendChild(r)}),e("out").hidden=!1,e("msg").textContent="Link read successfully.",e("msg").className="msg"}catch(t){e("msg").textContent="This link could not be read. It may have been cut off when it was copied.",e("msg").className="msg err"}})}();
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var LABELS = ['Letter for', 'Letter from', 'Title', 'Letter text', 'Sign-off', 'Question', 'Line shown after yes'];
+  function decode(s) {
+    s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '=';
+    var bin = atob(s), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  $('go').addEventListener('click', function () {
+    var v = $('lnk').value.trim(), m = /#l=([A-Za-z0-9_-]+)/.exec(v) || /^([A-Za-z0-9_-]{20,})$/.exec(v);
+    $('out').hidden = true;
+    if (!m) { $('msg').textContent = 'That does not look like a letter link. It should contain #l= followed by letters and numbers.'; $('msg').className = 'msg err'; return; }
+    try {
+      var arr = decode(m[1]), dl = $('dl'); dl.textContent = '';
+      LABELS.forEach(function (l, i) {
+        var dt = document.createElement('dt'); dt.style.fontWeight = '800'; dt.textContent = l;
+        var dd = document.createElement('dd'); dd.style.margin = '0'; dd.style.whiteSpace = 'pre-wrap'; dd.style.overflowWrap = 'anywhere'; dd.textContent = String(arr[i] || '');
+        dl.appendChild(dt); dl.appendChild(dd);
+      });
+      $('out').hidden = false; $('msg').textContent = 'Link read successfully.'; $('msg').className = 'msg';
+    } catch (e) { $('msg').textContent = 'This link could not be read. It may have been cut off when it was copied.'; $('msg').className = 'msg err'; }
+  });
+})();

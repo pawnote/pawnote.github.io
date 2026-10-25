@@ -1,1 +1,551 @@
-!function(){"use strict";var e=function(e){return document.getElementById(e)},t=!1;try{t=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}var n={mount:function(){},halfW:function(){return 4},reset:function(){},setSad:function(){},setHappy:function(){},setCarry:function(){},setDropped:function(){},pose:function(){},sidePose:function(){return{x:0,sc:1,look:0}},hop:function(){},nudge:function(){},walkIn:function(e){e&&e.done&&setTimeout(e.done,500)},leave:function(e){e&&e.done&&setTimeout(e.done,500)}};if("undefined"!=typeof THREE)try{n=function(){var e=new THREE.WebGLRenderer({antialias:!0,alpha:!0});e.setPixelRatio(Math.min(window.devicePixelRatio||1,2));var n=new THREE.Scene,o=new THREE.PerspectiveCamera(30,1.6,.1,100),a=6.2;n.add(new THREE.HemisphereLight(16777215,14273781,.85));var r=new THREE.DirectionalLight(16777215,.55);r.position.set(-3,6,7),n.add(r);var i=new THREE.DirectionalLight(16770033,.25);i.position.set(4,2,4),n.add(i);var s=function(e){return new THREE.Color(e)},c=function(e,t){return new THREE.MeshStandardMaterial(Object.assign({color:e,roughness:1,metalness:0},t||{}))},d=s(16513277),u=s(14868464),l={fur:c(16513277),pink:c(16756936),paw:c(13612790),foot:c(15709916),ink:c(1314847,{roughness:.25}),white:c(16777215,{roughness:.2,emissive:16777215,emissiveIntensity:.6}),nose:c(16748462,{roughness:.5}),mouth:c(8003640),tongue:c(16744351),blush:c(16748464,{transparent:!0,opacity:.5}),mint:c(9429961),star:c(12033266,{roughness:.5}),tear:c(10213887,{transparent:!0,opacity:0,roughness:.1}),env:c(16313556),envFlap:c(15719610),heart:c(16740250,{roughness:.5}),ribbon:c(12165875)},h={sph:new THREE.SphereGeometry(1,28,20),cone:new THREE.ConeGeometry(1,1,18),cyl:new THREE.CylinderGeometry(1,1,1,16),box:new THREE.BoxGeometry(1,1,1),arc:new THREE.TorusGeometry(1,.22,8,22,Math.PI)};function p(e,t,n,o,a){var r=new THREE.Mesh(h[e],t);return n&&r.position.set(n[0],n[1],n[2]),o&&r.scale.set(o[0],o[1],o[2]),a.add(r),r}function f(e){var t=new THREE.Shape;return t.moveTo(0,-.6*e),t.bezierCurveTo(-1.1*e,.1*e,-.7*e,.9*e,0,.35*e),t.bezierCurveTo(.7*e,.9*e,1.1*e,.1*e,0,-.6*e),t}var m=new THREE.Group;n.add(m);var y=new THREE.Mesh(new THREE.CircleGeometry(1.5,32),new THREE.MeshBasicMaterial({color:5913740,transparent:!0,opacity:.16}));y.rotation.x=-Math.PI/2,y.position.y=.01,m.add(y);var v=new THREE.Group;m.add(v),p("sph",l.fur,[0,1.1,0],[.74,.78,.64],v);var E=new THREE.Group;function w(e){var t=new THREE.Group;return t.position.set(e,.5,.05),v.add(t),p("cyl",l.fur,[0,-.15,0],[.19,.3,.19],t),p("sph",l.foot,[0,-.38,.1],[.27,.15,.37],t),t}E.position.set(0,1.64,.55),v.add(E),[-1,1].forEach(function(e){p("sph",l.mint,[.26*e,0,0],[.27,.19,.12],E).rotation.z=-.35*e}),p("sph",l.mint,[0,0,.04],[.13,.13,.1],E);var g=w(-.28),k=w(.28);function T(e){var t=new THREE.Group;return t.position.set(e,1.5,.1),v.add(t),p("cyl",l.fur,[0,-.3,0],[.14,.62,.14],t),p("sph",l.paw,[0,-.68,0],[.19,.19,.19],t),t}var b=T(-.6),x=T(.6);b.rotation.set(-1.4,0,.35),x.rotation.set(-1.4,0,-.35);var M=new THREE.Group;M.position.set(0,.7,-.55),v.add(M);for(var S=[],C=M,I=0;I<6;I++){var H=new THREE.Group;I&&(H.position.y=.2),C.add(H);var R=.15-.008*I;p("sph",5===I?l.paw:l.fur,[0,0,0],[R,1.35*R,R],H),S.push(H),C=H}M.rotation.x=-1.5;var L=new THREE.Group;L.position.set(0,2.6,.1),v.add(L),p("sph",l.fur,[0,0,0],[1.1,.92,.95],L);var G=new THREE.Group,q=new THREE.Group;G.position.set(-.68,.66,0),q.position.set(.68,.66,0),L.add(G),L.add(q),[G,q].forEach(function(e){p("cone",l.fur,[0,.24,0],[.42,.56,.32],e),p("cone",l.pink,[0,.21,.1],[.26,.38,.14],e)});var z=new THREE.Mesh(new THREE.ExtrudeGeometry(function(e,t){for(var n=new THREE.Shape,o=0;o<10;o++){var a=Math.PI/2+o*Math.PI/5,r=o%2?t:e,i=Math.cos(a)*r,s=Math.sin(a)*r;o?n.lineTo(i,s):n.moveTo(i,s)}return n.closePath(),n}(.2,.09),{depth:.05,bevelEnabled:!1}),l.star);function P(e){var t=new THREE.Group;t.position.set(e,-.02,.84),L.add(t);var n=p("sph",l.ink,[0,0,0],[.2,.26,.12],t),o=p("sph",l.white,[.07,.1,.1],[.075,.075,.05],t),a=p("sph",l.white,[-.065,-.09,.1],[.035,.035,.03],t),r=p("sph",l.fur,[0,.4,.04],[.27,.22,.14],t);return t.userData={pupil:n,h1:o,h2:a,lid:r},t}z.position.set(.66,.52,.5),z.rotation.z=-.25,z.rotation.y=.5,L.add(z);var X=P(-.42),A=P(.42);p("sph",l.nose,[0,-.15,.93],[.07,.05,.05],L),p("sph",l.blush,[-.7,-.22,.62],[.2,.12,.05],L).rotation.y=-.9,p("sph",l.blush,[.7,-.22,.62],[.2,.12,.05],L).rotation.y=.9;var N=new THREE.Group;N.position.set(0,-.33,.87),L.add(N),p("sph",l.mouth,[0,0,0],[.17,.11,.07],N),p("sph",l.tongue,[0,-.04,.03],[.1,.055,.05],N);var B=new THREE.Group;B.position.set(0,-.3,.9),L.add(B),[-.065,.065].forEach(function(e){p("arc",l.ink,[e,.02,0],[.065,.065,.065],B).rotation.z=Math.PI});var D=p("arc",l.ink,[0,-.36,.87],[.12,.12,.12],L),O=[-1,1].map(function(e){for(var t=[],n=0;n<2;n++)t.push(p("sph",l.tear,[.46*e,-.12,.8],[.05,.08,.04],L));return t}),Y=new THREE.Group;Y.position.set(0,1.3,.72),Y.rotation.z=.05,v.add(Y),p("box",l.env,[0,0,0],[.95,.68,.06],Y);var W=new THREE.Shape;W.moveTo(-.475,.34),W.lineTo(.475,.34),W.lineTo(0,-.04),W.closePath();var F=new THREE.Mesh(new THREE.ShapeGeometry(W),l.envFlap);F.position.z=.032,Y.add(F);var J=new THREE.Mesh(new THREE.ShapeGeometry(f(.1)),l.heart);J.position.set(0,-.02,.04),Y.add(J),[-1,1].forEach(function(e){p("sph",l.ribbon,[.08*e,-.1,.04],[.05,.025,.02],Y).rotation.z=.6*e});var Q=new THREE.Group;Q.position.set(.1,.04,.95),Q.rotation.set(-Math.PI/2,0,.25),m.add(Q),p("box",l.env,[0,0,0],[.95,.68,.04],Q);var j=new THREE.Mesh(new THREE.ShapeGeometry(f(.1)),l.heart);j.position.set(0,0,.025),Q.add(j);var _={mode:"idle",p:0,dur:3,fromX:0,toX:0,dir:1,done:null,x:0,offX:0,offXT:0,sc:1,scT:1,lookT:0,s:0,sT:0,h:0,hT:0,carry:!0,dropped:!1,amp:0,hop:0,shake:0};function U(e,t,n){return e+(t-e)*n}function $(e,t,n,o){e[t]+=(n-e[t])*Math.min(1,8*o)}var K=null,Z=null,V=10,ee=4,te=1.6,ne=new THREE.Clock,oe=0;function ae(){a=Math.max(6.2,3.5/te),V=a/2/Math.tan(15*Math.PI/180),o.position.set(0,2.65,V),o.lookAt(0,2.3,0),ee=a/2*te}function re(){if(K){var t=K.clientWidth,n=K.clientHeight;t&&n&&(e.setSize(t,n,!1),te=t/n,o.aspect=te,o.updateProjectionMatrix(),ae())}}function ie(e){oe+=e,_.s+=(_.sT-_.s)*Math.min(1,4*e),_.h+=(_.hT-_.h)*Math.min(1,7*e);var n,o=!1,a=_.lookT;if("walkIn"===_.mode||"leave"===_.mode){_.p=Math.min(1,_.p+e/_.dur);var r="walkIn"===_.mode?(n=_.p,1-Math.pow(1-n,2.2)):_.p;if(_.x=_.fromX+(_.toX-_.fromX)*r,o=_.p<1,a="walkIn"===_.mode&&_.p>.86?_.lookT:.85*_.dir,_.p>=1){var i=_.done;_.mode="idle",_.done=null,i&&i()}}_.offX+=(_.offXT-_.offX)*Math.min(1,3.5*e),_.sc+=(_.scT-_.sc)*Math.min(1,3.5*e),m.position.x=_.x+_.offX,m.rotation.y+=(a-m.rotation.y)*Math.min(1,5*e),_.amp+=((o?1:0)-_.amp)*Math.min(1,8*e);var s=Math.min(_.s,5),c=s/5,h=_.h>.5,p=oe*(10-3.5*c),f=_.amp*(1-.3*c),E=0;_.h>.05&&(E=Math.abs(Math.sin(6.5*oe))*(t?.2:.9)*_.h),_.hop>0&&(_.hop=Math.max(0,_.hop-1.6*e),E=Math.max(E,.7*Math.sin(Math.PI*(1-_.hop)))),_.shake=Math.max(0,_.shake-2.5*e);var w=.75*Math.sin(p)*f;g.rotation.x=w,k.rotation.x=-w,v.position.y=.14*Math.abs(Math.sin(p))*f+E+.012*Math.sin(2*oe),v.rotation.z=.05*Math.sin(p)*f+(_.h>.05?.07*Math.sin(6.5*oe)*_.h:0),m.rotation.z=.07*Math.sin(38*oe)*_.shake,m.scale.setScalar(_.sc*(1-.05*c)),y.scale.setScalar(1-.3*Math.min(E,1)),y.material.opacity=.16-.07*Math.min(E,1),l.fur.color.copy(d).lerp(u,Math.min(1,s/4));var T=[0,0],C=[0,0];if(h){var I=.3*Math.sin(10*oe);T=[-.15,-2.5+I],C=[-.15,2.5-I]}else if(_.carry)T=[-1.4,.35],C=[-1.4,-.35];else{var H=.7*Math.sin(p+Math.PI)*f;T=[H-.1*c,-.14-.05*c],C=[-H-.1*c,.14+.05*c]}$(b.rotation,"x",T[0],e),$(b.rotation,"z",T[1],e),$(x.rotation,"x",C[0],e),$(x.rotation,"z",C[1],e),Y.visible=_.carry&&!h,Q.visible=_.dropped&&!_.carry,Y.position.y=1.3+.05*Math.abs(Math.sin(p))*f,L.position.y=2.6-.18*c,L.rotation.x=.04+.5*c-(h?.12:0),L.rotation.z=.04*Math.sin(.9*oe)*(1-c)+(c>.15?.04*Math.sin(.7*oe):0)+(h?.06*Math.sin(6.5*oe):0),L.rotation.y=.12*Math.sin(.7*oe)*(1-.7*c);var R=.32+.85*c-(h?.12:0);G.rotation.z=R+.03*Math.sin(3.1*oe),q.rotation.z=-R-.03*Math.sin(2.7*oe),G.rotation.x=q.rotation.x=.3*-c;var z=oe%3.9,P=z>3.72?Math.sin((z-3.72)/.18*Math.PI):0,W=Math.min(1,.85*c+P);[X,A].forEach(function(e,t){var n=e.userData,o=t?-1:1;n.lid.visible=W>.06,n.lid.position.y=.42-.36*W,n.lid.rotation.z=o*c*.45;var a=1+(h?.1:0)+.08*c;n.pupil.scale.set(.2*a,.26*a,.12),n.h1.scale.setScalar(.075+.02*c+(h?.01:0)),n.h2.scale.setScalar(.035+.012*c)}),l.blush.opacity=h?.8:.45+.2*c;var F=h||_.s<.5&&(_.carry||"idle"!==_.mode);N.visible=F,D.visible=!F&&_.s>.7,B.visible=!F&&_.s<=.7,D.visible&&(D.scale.setScalar(.1+.04*c),D.position.y=-.36-.004*Math.sin(3*oe)*s);var J=Math.max(0,Math.min(1,(_.s-.6)/1.4));O.forEach(function(e,t){e.forEach(function(e,n){var o=(.7*oe+.5*n+.2*t)%1;e.position.y=-.12-.5*o,e.position.z=.8-.1*o,e.material.opacity=.9*Math.sin(Math.PI*o)*J;var a=.05+.03*c;e.scale.set(a,1.6*a,.8*a)})});for(var j=0;j<S.length;j++)S[j].rotation.x=h?-.05:U(-.2,.08,c),S[j].rotation.z=Math.sin(oe*(h?9:2.4-c)-.55*j)*(h?.32:.16*(1-.7*c));M.rotation.x=h?-1.1:U(-1.4,-2.3,c)}return ae(),function t(){requestAnimationFrame(t);var a=Math.min(ne.getDelta(),.05);!document.hidden&&K&&(ie(a),e.render(n,o))}(),{mount:function(t){K=t,t.appendChild(e.domElement),re(),window.ResizeObserver&&(Z&&Z.disconnect(),(Z=new ResizeObserver(re)).observe(t))},halfW:function(){return ee},reset:function(e){e=e||{},_.mode="idle",_.s=_.sT=e.sad||0,_.h=_.hT=0,_.carry=!1!==e.carry,_.dropped=!1,_.done=null,_.hop=0,_.shake=0,_.x=e.x||0,m.position.x=_.x+_.offX,m.rotation.y=_.lookT},setSad:function(e){_.sT=e},setHappy:function(e){_.hT=e?1:0,e&&(_.carry=!1)},setCarry:function(e){_.carry=e},setDropped:function(e){_.dropped=e},pose:function(e,t){_.offXT=e.x,_.scT=e.sc,_.lookT=e.look,t&&(_.offX=e.x,_.sc=e.sc)},sidePose:function(){return te>1.1?{x:.52*-ee,sc:1,look:.5}:{x:.4*-ee,sc:.5,look:.45}},hop:function(){_.hop=1},nudge:function(){_.shake=1},walkIn:function(e){_.mode="walkIn",_.p=0,_.dur=e.dur||3,_.fromX=e.from,_.toX=e.to||0,_.dir=_.toX>=_.fromX?1:-1,_.done=e.done||null,_.x=e.from,void 0!==e.carry&&(_.carry=e.carry)},leave:function(e){_.mode="leave",_.p=0,_.dur=e.dur||3,_.fromX=_.x,_.toX=e.to,_.dir=_.toX>=_.fromX?1:-1,_.done=e.done||null,void 0!==e.carry&&(_.carry=e.carry)}}}()}catch(e){window.console&&console.error(e)}var o={to:e("toName"),from:e("fromName"),title:e("title"),body:e("body"),sign:e("signoff"),q:e("question"),yes:e("yesLine")},a={to:"Lily",from:"Ethan",title:"A little note before I ask you something",body:"Lily, I have been trying to find the right moment for weeks, so I asked a very small, very serious kitten to help me.\nYou make ordinary days feel like a good song on repeat. I laugh more since I met you, and I catch myself smiling at my phone like an idiot.\nSo here is the thing I have been too nervous to say out loud.",sign:"With love, Ethan",q:"Will you go out with me?",yes:"Saturday, 6 pm. I'll bring the hot chocolate."},r=[function(e){return{title:"I made you a tiny letter",body:"I know you are busy, so I kept this short.\nThis time of year keeps reminding me of you: warm drinks, early dark, and wanting to tell someone about all of it.\nSo I sent a kitten to ask properly.",sign:"Yours, "+(e.from||"me"),q:"Will you come to the lantern walk with me on Saturday?",yes:"Saturday, 6 pm. I'll bring the hot chocolate."}},function(e){return{title:"A small invitation",body:"There is a ramen place I keep meaning to try.\nEvery time I picture it, you are across the table, arguing about the best topping.\nI would like to make that real.",sign:"Hopefully, "+(e.from||"me"),q:"Can I take you to dinner on Friday?",yes:"Friday at 7. I already booked the corner table."}},function(e){return{title:"I owe you a better sorry",body:"I should have called back that night, and I did not.\nI have thought about it every day since, and a text did not feel like enough.\nSo here is a letter, and a very sad-looking kitten on standby.",sign:"Sorry, "+(e.from||"me"),q:"Can we start over with coffee on Sunday?",yes:"Sunday, 10 am. First round is on me."}}],i="kitty-letter-draft-v2",s=0;function c(){var e={};for(var t in o)e[t]=o[t].value;return e}function d(e){for(var t in o)o[t].value=e[t]||""}function u(e){return e.split(/\n+/).map(function(e){return e.trim()}).filter(Boolean)}function l(e){return e.to.trim()}function h(e,t){e.querySelector(".p-for").textContent=function(e){return l(e)?"for "+l(e)+",":"for you,"}(t),e.querySelector(".p-title").textContent=t.title.trim()||a.title;var n=e.querySelector(".p-body");n.textContent="";var o=u(t.body);o.length||(o=u(a.body)),o.forEach(function(e){var t=document.createElement("p");t.textContent=e,n.appendChild(t)}),e.querySelector(".p-sign").textContent=t.sign.trim()}function p(t){var n=c();p.shown||(h(e("previewMail"),a),e("pvQuestion").textContent=a.q,e("pvYes").textContent=a.to+" said yes. "+a.yes,p.shown=!0);var o=u(n.body).length,r=n.body.length,s=e("bodyCount");if(s.textContent=o+(1===o?" paragraph":" paragraphs")+" · "+r+"/700",s.className=o>4||r>560?"warn":"",t)try{localStorage.setItem(i,JSON.stringify({ts:Date.now(),d:n}))}catch(e){}}function f(t){e("maker").hidden="maker"!==t,e("play-view").hidden="play"!==t,e("site-header").hidden="maker"!==t,n.mount(e("maker"===t?"makerHost":"playHost")),window.scrollTo(0,0)}Object.keys(o).forEach(function(e){o[e].addEventListener("input",function(){p(!0)})}),e("suggest").addEventListener("click",function(){var e=c(),t=r[s%r.length](e);s++,e.title=t.title,e.body=t.body,e.sign=t.sign,e.q=t.q,e.yes=t.yes,d(e),p(!0)}),e("clear").addEventListener("click",function(){d({}),p(!0),o.to.focus()});var m=null,y=null,v=!1,E=0,w=[],g=!1,k={x:0,sc:1,look:0},T=["uiIntro","uiOpen","uiQ","uiAnswers","uiYes","uiYesBtns","uiBye","uiByeBtn"];function b(e,t){var n=setTimeout(e,t);return w.push(n),n}function x(){w.forEach(clearTimeout),w=[]}function M(t){T.forEach(function(n){e(n).hidden=t.indexOf(n)<0}),t.forEach(function(t){var n=e(t);n.classList.remove("ui-enter"),n.offsetWidth,n.classList.add("ui-enter")})}var S=["","Oh. Are you sure, {n}?","The kitten is trying to be brave.","Please? It walked all this way.","The kitten has stopped smiling.","Last chance, {n}. The kitten is trying not to cry."];function C(){e("btnNo").style.transform="scale("+Math.max(.5,1-.1*E)+")",e("btnYes").style.transform="scale("+(1+.08*E)+")"}function I(){return-(n.halfW()+2.4)}function H(o){x(),m=o||c(),y=m,E=0,e("back").hidden=v,e("edit2").hidden=v,h(e("playMail"),m);var r=l(m);e("playLabel").textContent=r?"A letter for "+r:"A letter for you",e("introLine").textContent="A very small kitten has a letter "+(r?"for "+r:"for you"),e("qEyebrow").textContent=r?"A question for "+r:"A question for you",e("qText").textContent=m.q.trim()||a.q,e("mood").textContent="",e("playMail").className="mail",e("hearts").textContent="",C(),M([]),g=!1,e("play-view").classList.remove("side"),f("play"),n.pose(k,!0),n.reset({x:I(),carry:!0}),M(["uiIntro"]),n.walkIn({from:I(),to:0,dur:t?1:3.6,carry:!0,done:function(){n.hop(),M(["uiOpen"]),e("openBtn").focus({preventScroll:!0})}})}function R(t){n.setSad(t),M(["uiQ","uiAnswers"]),e("btnNo").focus({preventScroll:!0})}function L(){x(),M([]),g=!1,e("play-view").classList.remove("side"),n.pose(k,!0),n.reset({x:0,carry:!0}),f("maker")}e("form").addEventListener("submit",function(e){e.preventDefault(),H(a)}),e("openBtn").addEventListener("click",function(){M([]),g=!0,e("play-view").classList.add("side"),n.pose(n.sidePose()),b(function(){e("playMail").classList.add("in"),e("turn").focus({preventScroll:!0})},t?200:900),b(function(){n.setCarry(!1),n.setDropped(!0),n.hop()},t?300:1500)}),window.addEventListener("resize",function(){setTimeout(function(){g&&n.pose(n.sidePose(),!0)},120)}),e("turn").addEventListener("click",function(){e("playMail").classList.add("turned"),b(function(){n.hop(),R(0)},t?200:900)}),e("btnNo").addEventListener("click",function(){if(++E>=6)return n.setSad(5),e("byeTitle").textContent=l(m)?"Okay, "+l(m)+". The kitten understands.":"Okay. The kitten understands.",e("byeSig").textContent=m.from.trim()?"— "+m.from.trim():"",n.setDropped(!1),n.leave({to:I(),dur:t?1:5,carry:!1}),M(["uiBye"]),void b(function(){M(["uiBye","uiByeBtn"]),e("askAgain").focus({preventScroll:!0})},t?500:1800);var o;n.setSad(E),n.nudge(),e("mood").textContent=(o=S[E],l(m)?o.replace("{n}",l(m)):o.replace(", {n}","").replace("{n}","you")),C()}),e("askAgain").addEventListener("click",function(){E=5,M([]),e("mood").textContent="The kitten came back. It is trying very hard.",C(),n.reset({x:I(),carry:!1,sad:5}),n.setSad(5),n.setDropped(!1),n.walkIn({from:I(),to:0,dur:t?1:3,carry:!1,done:function(){n.setDropped(!0),R(5)}})}),e("btnYes").addEventListener("click",function(){n.setSad(0),n.setHappy(!0),n.setDropped(!1),e("yesTitle").textContent=l(m)?l(m)+" said yes.":"You said yes.",e("yesOut").textContent=m.yes.trim(),M(["uiYes","uiYesBtns"]),function(t){for(var n=e("hearts"),o=n.clientHeight||600,a=n.clientWidth||400,r=["#ff6f9a","#a28bf3","#ffb3c7","#ffcf5c"],i=0;i<t;i++)(function(e){b(function(){var t=document.createElement("span"),i=16+30*Math.random();t.className="heart",t.style.cssText="left:"+Math.random()*(a-i)+"px;width:"+i+"px;height:"+.92*i+"px;--rise:"+(o*(.55+.45*Math.random())+40)+"px;--drift:"+100*(Math.random()-.5)+"px;--dur:"+(2.8+2*Math.random())+"s",t.innerHTML='<svg viewBox="0 0 24 22" aria-hidden="true"><path fill="'+r[e%r.length]+'" d="M12 21.5C5 15.8 1.5 12.3 1.5 7.6 1.5 4.4 3.9 2 7 2c2 0 3.8 1 5 2.8C13.2 3 15 2 17 2c3.1 0 5.5 2.4 5.5 5.6 0 4.7-3.5 8.2-10.5 13.9z"/></svg>',n.appendChild(t),t.addEventListener("animationend",function(){t.remove()})},90*e)})(i)}(t?8:40),e("again").focus({preventScroll:!0})}),e("back").addEventListener("click",L),e("edit2").addEventListener("click",L),e("again").addEventListener("click",function(){H(y)});var G=["to","from","title","body","sign","q","yes"];function q(t,n){var o=e("saveMsg");o.textContent=t,o.className="note"+(n?" err":"")}function z(e){for(var t=(new TextEncoder).encode(JSON.stringify(G.map(function(t){return e[t]}))),n="",o=0;o<t.length;o++)n+=String.fromCharCode(t[o]);return btoa(n).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}var P=null,X=window.SITE&&SITE.symbol||"₹";function A(e){return X+Number(e).toLocaleString("en-IN")}if(window.SITE&&(P=(SITE.products||[]).filter(function(e){return"kitty"===e.id})[0]||null,SITE.name&&(document.title="Kitty Letter | "+SITE.name)),P){var N=e("pricebox"),B=document.createElement("span");B.className="now",B.textContent=A(P.price);var D=document.createElement("span");D.className="was",D.appendChild(document.createTextNode("Regular price "));var O=document.createElement("s");if(O.textContent=A(P.regular),D.appendChild(O),N.appendChild(B),N.appendChild(D),P.regular>P.price){var Y=document.createElement("span");Y.className="save",Y.textContent="Save "+A(P.regular-P.price),N.appendChild(Y)}N.hidden=!1,e("save").textContent="Pay "+A(P.price)+" and get link"}else e("save").textContent="Continue to checkout";e("save").addEventListener("click",function(){var t=function(e){var t={};return G.forEach(function(n){t[n]=String(e[n]||"")}),t}(c());if(t.to.trim()&&t.body.trim()&&t.q.trim()){var n=PawnoteCheckout.start({product:"kitty",code:z(t),letter:t,summary:"Letter "+(t.to.trim()?"for "+t.to.trim():"for you"),details:{"Letter for":t.to,"Letter from":t.from,Title:t.title,"Letter text":t.body,"Sign-off":t.sign,Question:t.q,"Line shown after yes":t.yes}});if(n.error)q("Your browser blocked saving the order. Allow site storage and try again.",!0);else{var o=n.opened;e("coLink").hidden=!1,q(o?"Checkout opened in a new tab. Finish there to get your link.":"Your order is ready. Use the link below to open checkout.")}}else q("Add their name, a letter and a question before paying.",!0)}),window.addEventListener("hashchange",function(){location.reload()});var W=null;try{var F=/^#l=([A-Za-z0-9_-]+)$/.exec(location.hash||"");F&&(W=function(e){for(e=e.replace(/-/g,"+").replace(/_/g,"/");e.length%4;)e+="=";for(var t=atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);var a=JSON.parse((new TextDecoder).decode(n)),r={};return G.forEach(function(e,t){r[e]=String(a[t]||"")}),r}(F[1]))}catch(e){W=null}!function(){var e=!1;try{var t=localStorage.getItem(i);if(t){var n=JSON.parse(t);n&&n.d&&Date.now()-n.ts<6048e5?(d(n.d),e=!0):localStorage.removeItem(i)}}catch(e){}e||d(a)}(),p(!1),n.mount(e("makerHost")),n.reset({x:0,carry:!0}),W&&(e("maker").hidden=!0,e("back").textContent="Make your own",e("edit2").textContent="Make your own",H(W))}();
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = false;
+  try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+  /* ================= KITTEN (three.js) ================= */
+  var kitten = {
+    mount: function () {}, halfW: function () { return 4; }, reset: function () {}, setSad: function () {}, setHappy: function () {},
+    setCarry: function () {}, setDropped: function () {}, pose: function () {}, sidePose: function () { return { x: 0, sc: 1, look: 0 }; }, hop: function () {}, nudge: function () {},
+    walkIn: function (o) { if (o && o.done) setTimeout(o.done, 500); },
+    leave: function (o) { if (o && o.done) setTimeout(o.done, 500); }
+  };
+  if (typeof THREE !== 'undefined') {
+    try { kitten = buildKitten(); } catch (err) { if (window.console) console.error(err); }
+  }
+
+  function buildKitten() {
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(30, 1.6, 0.1, 100);
+    var LOOK_Y = 2.3, visH = 6.2;
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xd9ccf5, 0.85));
+    var key = new THREE.DirectionalLight(0xffffff, 0.55); key.position.set(-3, 6, 7); scene.add(key);
+    var fill = new THREE.DirectionalLight(0xffe3f1, 0.25); fill.position.set(4, 2, 4); scene.add(fill);
+
+    var C = function (h) { return new THREE.Color(h); };
+    var M0 = function (c, extra) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 1, metalness: 0 }, extra || {})); };
+    var furBase = C(0xfbf8fd), furSad = C(0xe2dff0);
+    var mats = {
+      fur: M0(0xfbf8fd), pink: M0(0xffb0c8), paw: M0(0xcfb6f6), foot: M0(0xefb6dc),
+      ink: M0(0x14101f, { roughness: 0.25 }), white: M0(0xffffff, { roughness: 0.2, emissive: 0xffffff, emissiveIntensity: 0.6 }),
+      nose: M0(0xff8fae, { roughness: 0.5 }), mouth: M0(0x7a2038), tongue: M0(0xff7f9f),
+      blush: M0(0xff8fb0, { transparent: true, opacity: 0.5 }), mint: M0(0x8fe3c9), star: M0(0xb79cf2, { roughness: 0.5 }),
+      tear: M0(0x9bd9ff, { transparent: true, opacity: 0, roughness: 0.1 }),
+      env: M0(0xf8ecd4), envFlap: M0(0xefdcba), heart: M0(0xff6f9a, { roughness: 0.5 }), ribbon: M0(0xb9a2f3)
+    };
+    var geo = {
+      sph: new THREE.SphereGeometry(1, 28, 20), cone: new THREE.ConeGeometry(1, 1, 18), cyl: new THREE.CylinderGeometry(1, 1, 1, 16),
+      box: new THREE.BoxGeometry(1, 1, 1), arc: new THREE.TorusGeometry(1, 0.22, 8, 22, Math.PI)
+    };
+    function add(g, m, pos, scl, parent) {
+      var o = new THREE.Mesh(geo[g], m);
+      if (pos) o.position.set(pos[0], pos[1], pos[2]);
+      if (scl) o.scale.set(scl[0], scl[1], scl[2]);
+      parent.add(o); return o;
+    }
+    function heartShape(s) {
+      var h = new THREE.Shape();
+      h.moveTo(0, -0.6 * s);
+      h.bezierCurveTo(-1.1 * s, 0.1 * s, -0.7 * s, 0.9 * s, 0, 0.35 * s);
+      h.bezierCurveTo(0.7 * s, 0.9 * s, 1.1 * s, 0.1 * s, 0, -0.6 * s);
+      return h;
+    }
+    function starShape(R, r) {
+      var s = new THREE.Shape();
+      for (var i = 0; i < 10; i++) { var a = Math.PI / 2 + i * Math.PI / 5, rad = i % 2 ? r : R; var x = Math.cos(a) * rad, y = Math.sin(a) * rad; if (i) s.lineTo(x, y); else s.moveTo(x, y); }
+      s.closePath(); return s;
+    }
+
+    var root = new THREE.Group(); scene.add(root);
+    var shadow = new THREE.Mesh(new THREE.CircleGeometry(1.5, 32), new THREE.MeshBasicMaterial({ color: 0x5a3c8c, transparent: true, opacity: 0.16 }));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.01; root.add(shadow);
+    var body = new THREE.Group(); root.add(body);
+
+    /* torso */
+    add('sph', mats.fur, [0, 1.1, 0], [0.74, 0.78, 0.64], body);
+    /* mint bow */
+    var bow = new THREE.Group(); bow.position.set(0, 1.64, 0.55); body.add(bow);
+    [-1, 1].forEach(function (s) { var w = add('sph', mats.mint, [s * 0.26, 0, 0], [0.27, 0.19, 0.12], bow); w.rotation.z = s * -0.35; });
+    add('sph', mats.mint, [0, 0, 0.04], [0.13, 0.13, 0.1], bow);
+
+    /* legs + feet */
+    function leg(x) {
+      var g = new THREE.Group(); g.position.set(x, 0.5, 0.05); body.add(g);
+      add('cyl', mats.fur, [0, -0.15, 0], [0.19, 0.3, 0.19], g);
+      add('sph', mats.foot, [0, -0.38, 0.1], [0.27, 0.15, 0.37], g);
+      return g;
+    }
+    var legL = leg(-0.28), legR = leg(0.28);
+
+    /* arms */
+    function arm(x) {
+      var g = new THREE.Group(); g.position.set(x, 1.5, 0.1); body.add(g);
+      add('cyl', mats.fur, [0, -0.3, 0], [0.14, 0.62, 0.14], g);
+      add('sph', mats.paw, [0, -0.68, 0], [0.19, 0.19, 0.19], g);
+      return g;
+    }
+    var armL = arm(-0.6), armR = arm(0.6);
+    armL.rotation.set(-1.4, 0, 0.35); armR.rotation.set(-1.4, 0, -0.35);
+
+    /* tail */
+    var tailBase = new THREE.Group(); tailBase.position.set(0, 0.7, -0.55); body.add(tailBase);
+    var tail = [], tp = tailBase;
+    for (var i = 0; i < 6; i++) {
+      var tg = new THREE.Group(); if (i) tg.position.y = 0.2; tp.add(tg);
+      var r = 0.15 - i * 0.008; add('sph', i === 5 ? mats.paw : mats.fur, [0, 0, 0], [r, r * 1.35, r], tg);
+      tail.push(tg); tp = tg;
+    }
+    tailBase.rotation.x = -1.5;
+
+    /* head */
+    var head = new THREE.Group(); head.position.set(0, 2.6, 0.1); body.add(head);
+    add('sph', mats.fur, [0, 0, 0], [1.1, 0.92, 0.95], head);
+    var earL = new THREE.Group(), earR = new THREE.Group();
+    earL.position.set(-0.68, 0.66, 0); earR.position.set(0.68, 0.66, 0); head.add(earL); head.add(earR);
+    [earL, earR].forEach(function (e) {
+      add('cone', mats.fur, [0, 0.24, 0], [0.42, 0.56, 0.32], e);
+      add('cone', mats.pink, [0, 0.21, 0.1], [0.26, 0.38, 0.14], e);
+    });
+    var starMesh = new THREE.Mesh(new THREE.ExtrudeGeometry(starShape(0.2, 0.09), { depth: 0.05, bevelEnabled: false }), mats.star);
+    starMesh.position.set(0.66, 0.52, 0.5); starMesh.rotation.z = -0.25; starMesh.rotation.y = 0.5; head.add(starMesh);
+
+    function eye(x) {
+      var g = new THREE.Group(); g.position.set(x, -0.02, 0.84); head.add(g);
+      var pupil = add('sph', mats.ink, [0, 0, 0], [0.2, 0.26, 0.12], g);
+      var h1 = add('sph', mats.white, [0.07, 0.1, 0.1], [0.075, 0.075, 0.05], g);
+      var h2 = add('sph', mats.white, [-0.065, -0.09, 0.1], [0.035, 0.035, 0.03], g);
+      var lid = add('sph', mats.fur, [0, 0.4, 0.04], [0.27, 0.22, 0.14], g);
+      g.userData = { pupil: pupil, h1: h1, h2: h2, lid: lid };
+      return g;
+    }
+    var eyeL = eye(-0.42), eyeR = eye(0.42);
+    add('sph', mats.nose, [0, -0.15, 0.93], [0.07, 0.05, 0.05], head);
+    var cheekL = add('sph', mats.blush, [-0.7, -0.22, 0.62], [0.2, 0.12, 0.05], head); cheekL.rotation.y = -0.9;
+    var cheekR = add('sph', mats.blush, [0.7, -0.22, 0.62], [0.2, 0.12, 0.05], head); cheekR.rotation.y = 0.9;
+
+    var openMouth = new THREE.Group(); openMouth.position.set(0, -0.33, 0.87); head.add(openMouth);
+    add('sph', mats.mouth, [0, 0, 0], [0.17, 0.11, 0.07], openMouth);
+    add('sph', mats.tongue, [0, -0.04, 0.03], [0.1, 0.055, 0.05], openMouth);
+    var catMouth = new THREE.Group(); catMouth.position.set(0, -0.3, 0.9); head.add(catMouth);
+    [-0.065, 0.065].forEach(function (x) { var a = add('arc', mats.ink, [x, 0.02, 0], [0.065, 0.065, 0.065], catMouth); a.rotation.z = Math.PI; });
+    var frown = add('arc', mats.ink, [0, -0.36, 0.87], [0.12, 0.12, 0.12], head);
+
+    var tears = [-1, 1].map(function (side) {
+      var arr = []; for (var t = 0; t < 2; t++) arr.push(add('sph', mats.tear, [side * 0.46, -0.12, 0.8], [0.05, 0.08, 0.04], head)); return arr;
+    });
+
+    /* carried envelope */
+    var env = new THREE.Group(); env.position.set(0, 1.3, 0.72); env.rotation.z = 0.05; body.add(env);
+    add('box', mats.env, [0, 0, 0], [0.95, 0.68, 0.06], env);
+    var flap = new THREE.Shape(); flap.moveTo(-0.475, 0.34); flap.lineTo(0.475, 0.34); flap.lineTo(0, -0.04); flap.closePath();
+    var flapM = new THREE.Mesh(new THREE.ShapeGeometry(flap), mats.envFlap); flapM.position.z = 0.032; env.add(flapM);
+    var hm = new THREE.Mesh(new THREE.ShapeGeometry(heartShape(0.1)), mats.heart); hm.position.set(0, -0.02, 0.04); env.add(hm);
+    [-1, 1].forEach(function (s) { var rb = add('sph', mats.ribbon, [s * 0.08, -0.1, 0.04], [0.05, 0.025, 0.02], env); rb.rotation.z = s * 0.6; });
+
+    /* envelope dropped on the floor */
+    var floorEnv = new THREE.Group(); floorEnv.position.set(0.1, 0.04, 0.95); floorEnv.rotation.set(-Math.PI / 2, 0, 0.25); root.add(floorEnv);
+    add('box', mats.env, [0, 0, 0], [0.95, 0.68, 0.04], floorEnv);
+    var hm2 = new THREE.Mesh(new THREE.ShapeGeometry(heartShape(0.1)), mats.heart); hm2.position.set(0, 0, 0.025); floorEnv.add(hm2);
+
+    /* ---------- state ---------- */
+    var ks = { mode: 'idle', p: 0, dur: 3, fromX: 0, toX: 0, dir: 1, done: null, x: 0, offX: 0, offXT: 0, sc: 1, scT: 1, lookT: 0, s: 0, sT: 0, h: 0, hT: 0, carry: true, dropped: false, amp: 0, hop: 0, shake: 0 };
+    function ease(p) { return 1 - Math.pow(1 - p, 2.2); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function approach(o, k, v, dt) { o[k] += (v - o[k]) * Math.min(1, dt * 8); }
+    var host = null, ro = null, camDist = 10, halfWNow = 4, aspect = 1.6, clock = new THREE.Clock(), time = 0;
+
+    function frameCam() {
+      visH = Math.max(6.2, 3.5 / aspect);
+      camDist = (visH / 2) / Math.tan(15 * Math.PI / 180);
+      camera.position.set(0, LOOK_Y + 0.35, camDist); camera.lookAt(0, LOOK_Y, 0);
+      halfWNow = visH / 2 * aspect;
+    }
+    frameCam();
+    function resize() {
+      if (!host) return;
+      var w = host.clientWidth, h = host.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false); aspect = w / h; camera.aspect = aspect; camera.updateProjectionMatrix(); frameCam();
+    }
+
+    function update(dt) {
+      time += dt;
+      ks.s += (ks.sT - ks.s) * Math.min(1, dt * 4);
+      ks.h += (ks.hT - ks.h) * Math.min(1, dt * 7);
+      var moving = false, faceY = ks.lookT;
+      if (ks.mode === 'walkIn' || ks.mode === 'leave') {
+        ks.p = Math.min(1, ks.p + dt / ks.dur);
+        var e = ks.mode === 'walkIn' ? ease(ks.p) : ks.p;
+        ks.x = ks.fromX + (ks.toX - ks.fromX) * e;
+        moving = ks.p < 1;
+        faceY = (ks.mode === 'walkIn' && ks.p > 0.86) ? ks.lookT : ks.dir * 0.85;
+        if (ks.p >= 1) { var cb = ks.done; ks.mode = 'idle'; ks.done = null; if (cb) cb(); }
+      }
+      ks.offX += (ks.offXT - ks.offX) * Math.min(1, dt * 3.5); ks.sc += (ks.scT - ks.sc) * Math.min(1, dt * 3.5);
+      root.position.x = ks.x + ks.offX;
+      root.rotation.y += (faceY - root.rotation.y) * Math.min(1, dt * 5);
+      ks.amp += ((moving ? 1 : 0) - ks.amp) * Math.min(1, dt * 8);
+
+      var sadN = Math.min(ks.s, 5), sad = sadN / 5, happy = ks.h > 0.5;
+      var w = time * (10 - sad * 3.5), amp = ks.amp * (1 - sad * 0.3);
+      var jump = 0;
+      if (ks.h > 0.05) jump = Math.abs(Math.sin(time * 6.5)) * (reduce ? 0.2 : 0.9) * ks.h;
+      if (ks.hop > 0) { ks.hop = Math.max(0, ks.hop - dt * 1.6); jump = Math.max(jump, Math.sin(Math.PI * (1 - ks.hop)) * 0.7); }
+      ks.shake = Math.max(0, ks.shake - dt * 2.5);
+
+      var sw = Math.sin(w) * 0.75 * amp;
+      legL.rotation.x = sw; legR.rotation.x = -sw;
+      body.position.y = Math.abs(Math.sin(w)) * 0.14 * amp + jump + Math.sin(time * 2) * 0.012;
+      body.rotation.z = Math.sin(w) * 0.05 * amp + (ks.h > 0.05 ? Math.sin(time * 6.5) * 0.07 * ks.h : 0);
+      root.rotation.z = Math.sin(time * 38) * 0.07 * ks.shake;
+      root.scale.setScalar(ks.sc * (1 - sad * 0.05));
+      shadow.scale.setScalar(1 - Math.min(jump, 1) * 0.3); shadow.material.opacity = 0.16 - Math.min(jump, 1) * 0.07;
+
+      mats.fur.color.copy(furBase).lerp(furSad, Math.min(1, sadN / 4));
+
+      /* arms */
+      var tL = [0, 0], tR = [0, 0];
+      if (happy) { var wv = Math.sin(time * 10) * 0.3; tL = [-0.15, -2.5 + wv]; tR = [-0.15, 2.5 - wv]; }
+      else if (ks.carry) { tL = [-1.4, 0.35]; tR = [-1.4, -0.35]; }
+      else {
+        var sg = Math.sin(w + Math.PI) * 0.7 * amp;
+        tL = [sg - 0.1 * sad, -0.14 - sad * 0.05]; tR = [-sg - 0.1 * sad, 0.14 + sad * 0.05];
+      }
+      approach(armL.rotation, 'x', tL[0], dt); approach(armL.rotation, 'z', tL[1], dt);
+      approach(armR.rotation, 'x', tR[0], dt); approach(armR.rotation, 'z', tR[1], dt);
+      env.visible = ks.carry && !happy; floorEnv.visible = ks.dropped && !ks.carry;
+      env.position.y = 1.3 + Math.abs(Math.sin(w)) * 0.05 * amp;
+
+      /* head */
+      head.position.y = 2.6 - sad * 0.18;
+      head.rotation.x = 0.04 + sad * 0.5 - (happy ? 0.12 : 0);
+      head.rotation.z = Math.sin(time * 0.9) * 0.04 * (1 - sad) + (sad > 0.15 ? Math.sin(time * 0.7) * 0.04 : 0) + (happy ? Math.sin(time * 6.5) * 0.06 : 0);
+      head.rotation.y = Math.sin(time * 0.7) * 0.12 * (1 - sad * 0.7);
+      var droop = 0.32 + sad * 0.85 - (happy ? 0.12 : 0);
+      earL.rotation.z = droop + Math.sin(time * 3.1) * 0.03; earR.rotation.z = -droop - Math.sin(time * 2.7) * 0.03;
+      earL.rotation.x = earR.rotation.x = -sad * 0.3;
+
+      /* eyes */
+      var bt = time % 3.9, blink = bt > 3.72 ? Math.sin((bt - 3.72) / 0.18 * Math.PI) : 0;
+      var lidAmt = Math.min(1, sad * 0.85 + blink);
+      [eyeL, eyeR].forEach(function (g, idx) {
+        var u = g.userData, side = idx ? -1 : 1;
+        u.lid.visible = lidAmt > 0.06; u.lid.position.y = 0.42 - lidAmt * 0.36;
+        u.lid.rotation.z = side * sad * 0.45;
+        var sc = 1 + (happy ? 0.1 : 0) + sad * 0.08;
+        u.pupil.scale.set(0.2 * sc, 0.26 * sc, 0.12);
+        u.h1.scale.setScalar(0.075 + sad * 0.02 + (happy ? 0.01 : 0)); u.h2.scale.setScalar(0.035 + sad * 0.012);
+      });
+      mats.blush.opacity = happy ? 0.8 : 0.45 + sad * 0.2;
+
+      /* mouth */
+      var cheerful = happy || (ks.s < 0.5 && (ks.carry || ks.mode !== 'idle'));
+      openMouth.visible = cheerful; frown.visible = !cheerful && ks.s > 0.7; catMouth.visible = !cheerful && ks.s <= 0.7;
+      if (frown.visible) { frown.scale.setScalar(0.1 + sad * 0.04); frown.position.y = -0.36 - Math.sin(time * 3) * 0.004 * sadN; }
+
+      /* tears */
+      var tearAmt = Math.max(0, Math.min(1, (ks.s - 0.6) / 1.4));
+      tears.forEach(function (arr, si) {
+        arr.forEach(function (m, ti) {
+          var ph = (time * 0.7 + ti * 0.5 + si * 0.2) % 1;
+          m.position.y = -0.12 - ph * 0.5; m.position.z = 0.8 - ph * 0.1;
+          m.material.opacity = Math.sin(Math.PI * ph) * 0.9 * tearAmt;
+          var q = 0.05 + sad * 0.03; m.scale.set(q, q * 1.6, q * 0.8);
+        });
+      });
+
+      /* tail */
+      for (var j = 0; j < tail.length; j++) {
+        tail[j].rotation.x = happy ? -0.05 : lerp(-0.2, 0.08, sad);
+        tail[j].rotation.z = Math.sin(time * (happy ? 9 : 2.4 - sad) - j * 0.55) * (happy ? 0.32 : 0.16 * (1 - sad * 0.7));
+      }
+      tailBase.rotation.x = happy ? -1.1 : lerp(-1.4, -2.3, sad);
+    }
+
+    function frame() {
+      requestAnimationFrame(frame);
+      var dt = Math.min(clock.getDelta(), 0.05);
+      if (document.hidden || !host) return;
+      update(dt); renderer.render(scene, camera);
+    }
+    frame();
+
+    return {
+      mount: function (h) {
+        host = h; h.appendChild(renderer.domElement); resize();
+        if (window.ResizeObserver) { if (ro) ro.disconnect(); ro = new ResizeObserver(resize); ro.observe(h); }
+      },
+      halfW: function () { return halfWNow; },
+      reset: function (o) {
+        o = o || {};
+        ks.mode = 'idle'; ks.s = ks.sT = o.sad || 0; ks.h = ks.hT = 0; ks.carry = o.carry !== false; ks.dropped = false; ks.done = null; ks.hop = 0; ks.shake = 0;
+        ks.x = o.x || 0; root.position.x = ks.x + ks.offX; root.rotation.y = ks.lookT;
+      },
+      setSad: function (n) { ks.sT = n; },
+      setHappy: function (b) { ks.hT = b ? 1 : 0; if (b) ks.carry = false; },
+      setCarry: function (b) { ks.carry = b; },
+      setDropped: function (b) { ks.dropped = b; },
+      pose: function (o, instant) {
+        ks.offXT = o.x; ks.scT = o.sc; ks.lookT = o.look;
+        if (instant) { ks.offX = o.x; ks.sc = o.sc; }
+      },
+      sidePose: function () {
+        return aspect > 1.1 ? { x: -halfWNow * 0.52, sc: 1, look: 0.5 } : { x: -halfWNow * 0.4, sc: 0.5, look: 0.45 };
+      },
+      hop: function () { ks.hop = 1; },
+      nudge: function () { ks.shake = 1; },
+      walkIn: function (o) {
+        ks.mode = 'walkIn'; ks.p = 0; ks.dur = o.dur || 3; ks.fromX = o.from; ks.toX = o.to || 0; ks.dir = ks.toX >= ks.fromX ? 1 : -1; ks.done = o.done || null;
+        ks.x = o.from; if (o.carry !== undefined) ks.carry = o.carry;
+      },
+      leave: function (o) {
+        ks.mode = 'leave'; ks.p = 0; ks.dur = o.dur || 3; ks.fromX = ks.x; ks.toX = o.to; ks.dir = ks.toX >= ks.fromX ? 1 : -1; ks.done = o.done || null;
+        if (o.carry !== undefined) ks.carry = o.carry;
+      }
+    };
+  }
+
+  /* ================= FORM + DRAFT ================= */
+  var F = { to: $('toName'), from: $('fromName'), title: $('title'), body: $('body'), sign: $('signoff'), q: $('question'), yes: $('yesLine') };
+  var SAMPLE = {
+    to: 'Lily', from: 'Ethan', title: 'A little note before I ask you something',
+    body: 'Lily, I have been trying to find the right moment for weeks, so I asked a very small, very serious kitten to help me.\nYou make ordinary days feel like a good song on repeat. I laugh more since I met you, and I catch myself smiling at my phone like an idiot.\nSo here is the thing I have been too nervous to say out loud.',
+    sign: 'With love, Ethan', q: 'Will you go out with me?', yes: "Saturday, 6 pm. I'll bring the hot chocolate."
+  };
+  var DRAFTS = [
+    function (d) { return { title: 'I made you a tiny letter', body: 'I know you are busy, so I kept this short.\nThis time of year keeps reminding me of you: warm drinks, early dark, and wanting to tell someone about all of it.\nSo I sent a kitten to ask properly.', sign: 'Yours, ' + (d.from || 'me'), q: 'Will you come to the lantern walk with me on Saturday?', yes: "Saturday, 6 pm. I'll bring the hot chocolate." }; },
+    function (d) { return { title: 'A small invitation', body: 'There is a ramen place I keep meaning to try.\nEvery time I picture it, you are across the table, arguing about the best topping.\nI would like to make that real.', sign: 'Hopefully, ' + (d.from || 'me'), q: 'Can I take you to dinner on Friday?', yes: 'Friday at 7. I already booked the corner table.' }; },
+    function (d) { return { title: 'I owe you a better sorry', body: 'I should have called back that night, and I did not.\nI have thought about it every day since, and a text did not feel like enough.\nSo here is a letter, and a very sad-looking kitten on standby.', sign: 'Sorry, ' + (d.from || 'me'), q: 'Can we start over with coffee on Sunday?', yes: 'Sunday, 10 am. First round is on me.' }; }
+  ];
+    var KEY = 'kitty-letter-draft-v2', WEEK = 7 * 24 * 3600 * 1000, draftIdx = 0;
+
+  function read() { var o = {}; for (var k in F) o[k] = F[k].value; return o; }
+  function write(o) { for (var k in F) F[k].value = o[k] || ''; }
+  function paras(s) { return s.split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean); }
+  function nm(d) { return d.to.trim(); }
+  function forLine(d) { return nm(d) ? 'for ' + nm(d) + ',' : 'for you,'; }
+  function fillMail(root, d) {
+    root.querySelector('.p-for').textContent = forLine(d);
+    root.querySelector('.p-title').textContent = d.title.trim() || SAMPLE.title;
+    var b = root.querySelector('.p-body'); b.textContent = '';
+    var ps = paras(d.body); if (!ps.length) ps = paras(SAMPLE.body);
+    ps.forEach(function (t) { var p = document.createElement('p'); p.textContent = t; b.appendChild(p); });
+    root.querySelector('.p-sign').textContent = d.sign.trim();
+  }
+  function refresh(save) {
+    var d = read();
+    /* the preview is always the sample letter, never the customer's own words */
+    if (!refresh.shown) { fillMail($('previewMail'), SAMPLE); $('pvQuestion').textContent = SAMPLE.q; $('pvYes').textContent = SAMPLE.to + ' said yes. ' + SAMPLE.yes; refresh.shown = true; }
+    var n = paras(d.body).length, chars = d.body.length, c = $('bodyCount');
+    c.textContent = n + (n === 1 ? ' paragraph' : ' paragraphs') + ' · ' + chars + '/700';
+    c.className = (n > 4 || chars > 560) ? 'warn' : '';
+    if (save) { try { localStorage.setItem(KEY, JSON.stringify({ ts: Date.now(), d: d })); } catch (e) {} }
+  }
+  function restore() {
+    var loaded = false;
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var o = JSON.parse(raw); if (o && o.d && Date.now() - o.ts < WEEK) { write(o.d); loaded = true; } else { localStorage.removeItem(KEY); } }
+    } catch (e) {}
+    if (!loaded) write(SAMPLE);
+  }
+  Object.keys(F).forEach(function (k) { F[k].addEventListener('input', function () { refresh(true); }); });
+  $('suggest').addEventListener('click', function () {
+    var d = read(); var s = DRAFTS[draftIdx % DRAFTS.length](d); draftIdx++;
+    d.title = s.title; d.body = s.body; d.sign = s.sign; d.q = s.q; d.yes = s.yes; write(d); refresh(true);
+  });
+  $('clear').addEventListener('click', function () { write({}); refresh(true); F.to.focus(); });
+
+  /* ================= VIEWS ================= */
+  function show(view) {
+    $('maker').hidden = view !== 'maker'; $('play-view').hidden = view !== 'play'; $('site-header').hidden = view !== 'maker';
+    kitten.mount(view === 'maker' ? $('makerHost') : $('playHost'));
+    window.scrollTo(0, 0);
+  }
+
+  /* ================= PLAY FLOW ================= */
+  var D = null, playData = null, lockedView = false, noCount = 0, timers = [], sideMode = false, CENTER = { x: 0, sc: 1, look: 0 };
+  var UIS = ['uiIntro', 'uiOpen', 'uiQ', 'uiAnswers', 'uiYes', 'uiYesBtns', 'uiBye', 'uiByeBtn'];
+  function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function showUI(ids) {
+    UIS.forEach(function (id) { $(id).hidden = ids.indexOf(id) < 0; });
+    ids.forEach(function (id) { var el = $(id); el.classList.remove('ui-enter'); void el.offsetWidth; el.classList.add('ui-enter'); });
+  }
+  var MOODS = ['', 'Oh. Are you sure, {n}?', 'The kitten is trying to be brave.', 'Please? It walked all this way.', 'The kitten has stopped smiling.', 'Last chance, {n}. The kitten is trying not to cry.'];
+  function who(t) { return nm(D) ? t.replace('{n}', nm(D)) : t.replace(', {n}', '').replace('{n}', 'you'); }
+  function applyScales() {
+    $('btnNo').style.transform = 'scale(' + Math.max(0.5, 1 - noCount * 0.1) + ')';
+    $('btnYes').style.transform = 'scale(' + (1 + noCount * 0.08) + ')';
+  }
+  function offLeft() { return -(kitten.halfW() + 2.4); }
+  function offRight() { return kitten.halfW() + 2.4; }
+
+  function startPlay(data) {
+    clearTimers();
+    D = data || read(); playData = D; noCount = 0;
+    $('back').hidden = lockedView; $('edit2').hidden = lockedView;
+    fillMail($('playMail'), D);
+    var nmv = nm(D);
+    $('playLabel').textContent = nmv ? 'A letter for ' + nmv : 'A letter for you';
+    $('introLine').textContent = 'A very small kitten has a letter ' + (nmv ? 'for ' + nmv : 'for you');
+    $('qEyebrow').textContent = nmv ? 'A question for ' + nmv : 'A question for you';
+    $('qText').textContent = D.q.trim() || SAMPLE.q;
+    $('mood').textContent = '';
+    $('playMail').className = 'mail'; $('hearts').textContent = '';
+    applyScales(); showUI([]);
+    sideMode = false; $('play-view').classList.remove('side');
+    show('play');
+    kitten.pose(CENTER, true);
+    kitten.reset({ x: offLeft(), carry: true });
+    showUI(['uiIntro']);
+    kitten.walkIn({
+      from: offLeft(), to: 0, dur: reduce ? 1 : 3.6, carry: true,
+      done: function () { kitten.hop(); showUI(['uiOpen']); $('openBtn').focus({ preventScroll: true }); }
+    });
+  }
+  $('form').addEventListener('submit', function (e) { e.preventDefault(); startPlay(SAMPLE); });
+
+  $('openBtn').addEventListener('click', function () {
+    showUI([]);
+    sideMode = true; $('play-view').classList.add('side');
+    kitten.pose(kitten.sidePose());
+    later(function () { $('playMail').classList.add('in'); $('turn').focus({ preventScroll: true }); }, reduce ? 200 : 900);
+    later(function () { kitten.setCarry(false); kitten.setDropped(true); kitten.hop(); }, reduce ? 300 : 1500);
+  });
+  window.addEventListener('resize', function () { setTimeout(function () { if (sideMode) kitten.pose(kitten.sidePose(), true); }, 120); });
+
+  function askQuestion(sadLevel) {
+    kitten.setSad(sadLevel);
+    showUI(['uiQ', 'uiAnswers']);
+    $('btnNo').focus({ preventScroll: true });
+  }
+  $('turn').addEventListener('click', function () {
+    $('playMail').classList.add('turned');
+    later(function () { kitten.hop(); askQuestion(0); }, reduce ? 200 : 900);
+  });
+
+  $('btnNo').addEventListener('click', function () {
+    noCount++;
+    if (noCount >= 6) { goodbye(); return; }
+    kitten.setSad(noCount); kitten.nudge();
+    $('mood').textContent = who(MOODS[noCount]);
+    applyScales();
+  });
+
+  function goodbye() {
+    kitten.setSad(5);
+    $('byeTitle').textContent = nm(D) ? 'Okay, ' + nm(D) + '. The kitten understands.' : 'Okay. The kitten understands.';
+    $('byeSig').textContent = D.from.trim() ? '— ' + D.from.trim() : '';
+    kitten.setDropped(false);
+    kitten.leave({ to: offLeft(), dur: reduce ? 1 : 5, carry: false });
+    showUI(['uiBye']);
+    later(function () { showUI(['uiBye', 'uiByeBtn']); $('askAgain').focus({ preventScroll: true }); }, reduce ? 500 : 1800);
+  }
+  $('askAgain').addEventListener('click', function () {
+    noCount = 5; showUI([]);
+    $('mood').textContent = 'The kitten came back. It is trying very hard.';
+    applyScales();
+    kitten.reset({ x: offLeft(), carry: false, sad: 5 });
+    kitten.setSad(5); kitten.setDropped(false);
+    kitten.walkIn({ from: offLeft(), to: 0, dur: reduce ? 1 : 3, carry: false, done: function () { kitten.setDropped(true); askQuestion(5); } });
+  });
+
+  function heartSvg(color) {
+    return '<svg viewBox="0 0 24 22" aria-hidden="true"><path fill="' + color + '" d="M12 21.5C5 15.8 1.5 12.3 1.5 7.6 1.5 4.4 3.9 2 7 2c2 0 3.8 1 5 2.8C13.2 3 15 2 17 2c3.1 0 5.5 2.4 5.5 5.6 0 4.7-3.5 8.2-10.5 13.9z"/></svg>';
+  }
+  function hearts(n) {
+    var box = $('hearts'), h = box.clientHeight || 600, w = box.clientWidth || 400;
+    var colors = ['#ff6f9a', '#a28bf3', '#ffb3c7', '#ffcf5c'];
+    for (var i = 0; i < n; i++) {
+      (function (i) {
+        later(function () {
+          var el = document.createElement('span'), s = 16 + Math.random() * 30;
+          el.className = 'heart';
+          el.style.cssText = 'left:' + (Math.random() * (w - s)) + 'px;width:' + s + 'px;height:' + s * 0.92 + 'px;--rise:' + (h * (0.55 + Math.random() * 0.45) + 40) + 'px;--drift:' + ((Math.random() - 0.5) * 100) + 'px;--dur:' + (2.8 + Math.random() * 2) + 's';
+          el.innerHTML = heartSvg(colors[i % colors.length]);
+          box.appendChild(el);
+          el.addEventListener('animationend', function () { el.remove(); });
+        }, i * 90);
+      })(i);
+    }
+  }
+  $('btnYes').addEventListener('click', function () {
+    kitten.setSad(0); kitten.setHappy(true); kitten.setDropped(false);
+    $('yesTitle').textContent = nm(D) ? nm(D) + ' said yes.' : 'You said yes.';
+    $('yesOut').textContent = D.yes.trim();
+    showUI(['uiYes', 'uiYesBtns']);
+    hearts(reduce ? 8 : 40);
+    $('again').focus({ preventScroll: true });
+  });
+  function toMaker() { if (lockedView) return; clearTimers(); showUI([]); sideMode = false; $('play-view').classList.remove('side'); kitten.pose(CENTER, true); kitten.reset({ x: 0, carry: true }); show('maker'); }
+  $('back').addEventListener('click', toMaker);
+  $('edit2').addEventListener('click', toMaker);
+  $('again').addEventListener('click', function () { startPlay(playData); });
+
+  /* ================= CHECKOUT HAND-OFF ================= */
+  var FIELDS = ['to', 'from', 'title', 'body', 'sign', 'q', 'yes'];
+  function clean(d) { var o = {}; FIELDS.forEach(function (k) { o[k] = String(d[k] || ''); }); return o; }
+  function say(msg, err) { var m = $('saveMsg'); m.textContent = msg; m.className = 'note' + (err ? ' err' : ''); }
+  function encode(d) {
+    var bytes = new TextEncoder().encode(JSON.stringify(FIELDS.map(function (k) { return d[k]; })));
+    var bin = ''; for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decode(s) {
+    s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '=';
+    var bin = atob(s), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    var arr = JSON.parse(new TextDecoder().decode(bytes)), o = {};
+    FIELDS.forEach(function (k, i) { o[k] = String(arr[i] || ''); });
+    return o;
+  }
+  /* price, name and currency come from config.js so the shop has one place to edit */
+  var KP = null, sym = (window.SITE && SITE.symbol) || '\u20b9';
+  function fm(n) { return sym + Number(n).toLocaleString('en-IN'); }
+  if (window.SITE) {
+    KP = (SITE.products || []).filter(function (x) { return x.id === 'kitty'; })[0] || null;
+    if (SITE.name) document.title = 'Kitty Letter | ' + SITE.name;
+  }
+  if (KP) {
+    var pb = $('pricebox');
+    var nowEl = document.createElement('span'); nowEl.className = 'now'; nowEl.textContent = fm(KP.price);
+    var wasEl = document.createElement('span'); wasEl.className = 'was'; wasEl.appendChild(document.createTextNode('Regular price '));
+    var st = document.createElement('s'); st.textContent = fm(KP.regular); wasEl.appendChild(st);
+    pb.appendChild(nowEl); pb.appendChild(wasEl);
+    if (KP.regular > KP.price) { var sv = document.createElement('span'); sv.className = 'save'; sv.textContent = 'Save ' + fm(KP.regular - KP.price); pb.appendChild(sv); }
+    pb.hidden = false;
+    $('save').textContent = 'Pay ' + fm(KP.price) + ' and get link';
+  } else { $('save').textContent = 'Continue to checkout'; }
+  /* the pay button saves the letter, then opens the checkout page in a new tab */
+  $('save').addEventListener('click', function () {
+    var d = clean(read());
+    if (!d.to.trim() || !d.body.trim() || !d.q.trim()) { say('Add their name, a letter and a question before paying.', true); return; }
+    var res = PawnoteCheckout.start({
+      product: 'kitty', code: encode(d), letter: d,
+      summary: 'Letter ' + (d.to.trim() ? 'for ' + d.to.trim() : 'for you'),
+      details: { 'Letter for': d.to, 'Letter from': d.from, 'Title': d.title, 'Letter text': d.body, 'Sign-off': d.sign, 'Question': d.q, 'Line shown after yes': d.yes }
+    });
+    if (res.error) { say('Your browser blocked saving the order. Allow site storage and try again.', true); return; }
+    var w = res.opened;
+    $('coLink').hidden = false;
+    say(w ? 'Checkout opened in a new tab. Finish there to get your link.' : 'Your order is ready. Use the link below to open checkout.');
+  });
+  window.addEventListener('hashchange', function () { location.reload(); });
+
+  /* ================= INIT ================= */
+  var shared = null;
+  try { var m = /^#l=([A-Za-z0-9_-]+)$/.exec(location.hash || ''); if (m) shared = decode(m[1]); } catch (e) { shared = null; }
+  restore();
+  refresh(false);
+  kitten.mount($('makerHost'));
+  kitten.reset({ x: 0, carry: true });
+  if (shared) {
+    $('maker').hidden = true;
+    $('back').textContent = 'Make your own';
+    $('edit2').textContent = 'Make your own';
+    startPlay(shared);
+  }
+})();

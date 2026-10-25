@@ -1,1 +1,202 @@
-!function(){"use strict";var e=window.SITE||{},t=e.symbol||"₹",n=String(e.apiBase||"").replace(/\/+$/,"");function a(e){return document.getElementById(e)}function o(e){return t+Number(e).toLocaleString("en-IN")}var r="pawnote-paid-v1",i="pawnote-buyer-v1",d=null;try{d=JSON.parse(localStorage.getItem("pawnote-order-v1")||"null")}catch(e){}var c=d&&(e.products||[]).filter(function(e){return e.id===d.product&&"live"===e.status})[0];if(d&&c&&d.code&&/^PN-[A-Z2-9]{8}$/.test(d.id||"")){a("co").hidden=!1,a("sumImg").src=c.image||"",a("sumName").textContent=c.name,a("sumFor").textContent=d.summary||"";var u=null;a("couponForm").addEventListener("submit",function(e){e.preventDefault();var t=a("couponInput").value.trim().toUpperCase();t?(g("Checking…"),a("couponApply").disabled=!0,y("/api/quote",{product:c.id,coupon:t}).then(function(e){a("couponApply").disabled=!1,e.ok?(g(((u={coupon:e.data.coupon,discount:e.data.discount,total:e.data.total,label:e.data.label}).label?u.label+" applied. ":"Coupon applied. ")+"You save "+o(u.discount)+".","ok"),C()):g(e.data&&e.data.error&&"network"!==e.data.error&&"not-configured"!==e.data.error?e.data.error:"Coupons are not available right now. Please try again in a moment.","err")})):g("Enter a coupon code first.","err")});var l={name:a("bName"),email:a("bEmail"),phone:a("bPhone"),agree:a("bAgree"),updates:a("bUpdates")};try{var p=JSON.parse(localStorage.getItem(i)||"{}");l.name.value=p.name||"",l.email.value=p.email||"",l.phone.value=p.phone||"",l.updates.checked=!!p.updates,l.agree.checked=!!p.agree}catch(e){}a("doneCopy").addEventListener("click",function(){var e=a("doneUrl"),t=a("doneCopy"),n=function(){t.textContent="Copied",setTimeout(function(){t.textContent="Copy"},1600)},o=function(){e.focus(),e.select();try{document.execCommand("copy")}catch(e){}n()};try{navigator.clipboard.writeText(e.value).then(n,o)}catch(e){o()}});var s=null,m=null,h=null;a("qrCompany").addEventListener("input",N),a("qrItem").addEventListener("input",N),a("qrPng").addEventListener("click",function(){h&&h.toBlob(function(e){e?_(e,P()+".png"):I("Could not create the image.",!0)},"image/png")}),a("qrSvg").addEventListener("click",function(){s&&_(new Blob([s.svg()],{type:"image/svg+xml"}),P()+".svg")}),navigator.share&&(a("qrShare").hidden=!1,a("qrShare").addEventListener("click",function(){h&&h.toBlob(function(e){var t=e&&new File([e],P()+".png",{type:"image/png"}),n={title:(a("qrCompany").value||"Gift")+" - "+a("qrItem").value,text:"Scan to open your gift",url:a("doneUrl").value};t&&navigator.canShare&&navigator.canShare({files:[t]})&&(n.files=[t]),navigator.share(n).catch(function(){})},"image/png")})),a("payBtn").addEventListener("click",function(){var t=function(){var e,t=(e=l.phone.value.replace(/[^\d+]/g,"").replace(/^\+/,""),/^\d{10}$/.test(e)&&(e="91"+e),{name:l.name.value.trim(),email:l.email.value.trim(),phone:e?"+"+e:"",agree:l.agree.checked,updates:l.updates.checked}),n=null,a="";if([l.name,l.email,l.phone].forEach(function(e){e.removeAttribute("aria-invalid")}),t.name.length<2?(n=l.name,a="Enter your full name."):/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t.email)?/^\+\d{10,14}$/.test(t.phone)?t.agree||(n=l.agree,a="Please tick the box to agree to the Terms and Privacy policy."):(n=l.phone,a="Enter a valid mobile number with 10 digits."):(n=l.email,a="Enter a valid email address, like you@example.com."),n)return"checkbox"!==n.type&&n.setAttribute("aria-invalid","true"),k(a,!0),n.focus(),null;try{localStorage.setItem(i,JSON.stringify({name:t.name,email:t.email,phone:l.phone.value.trim(),agree:t.agree,updates:t.updates}))}catch(e){}return t}();if(t){var o=a("payBtn");if(n){o.disabled=!0,k("Starting your order…");var r=u?u.coupon:"";y("/api/create-order",{product:c.id,coupon:r,orderId:d.id,buyer:{name:t.name,email:t.email,phone:t.phone,updates:t.updates}}).then(function(n){n.ok?n.data.free?y("/api/claim-free",{product:c.id,coupon:r,orderId:d.id,buyer:{name:t.name,email:t.email,phone:t.phone,updates:t.updates},link:b(),details:L()}).then(function(e){o.disabled=!1,e.ok?(E("FREE-"+r),x("FREE-"+r,!1)):k(e.data.error||"Could not complete your order.",!0)}):function(e){if(window.Razorpay)e(!0);else{var t=document.createElement("script");t.src="https://checkout.razorpay.com/v1/checkout.js",t.onload=function(){e(!!window.Razorpay)},t.onerror=function(){e(!1)},document.head.appendChild(t)}}(function(a){if(a){var r=n.data,i=new window.Razorpay({key:r.key_id,order_id:r.order_id,amount:r.amount,currency:r.currency,name:e.name||"Pawnote",description:c.name,prefill:{name:t.name,email:t.email,contact:t.phone},theme:{color:"#7a5ce0"},handler:function(e){k("Confirming your payment…"),y("/api/verify-payment",{razorpay_order_id:e.razorpay_order_id,razorpay_payment_id:e.razorpay_payment_id,razorpay_signature:e.razorpay_signature,orderId:d.id,link:b(),details:L()}).then(function(t){o.disabled=!1,t.ok?(E(e.razorpay_payment_id),x(e.razorpay_payment_id,!1)):k("We could not confirm your payment. If you were charged, write to support with order ID "+d.id+" and payment ID "+e.razorpay_payment_id+".",!0)})},modal:{ondismiss:function(){o.disabled=!1,k("Payment cancelled. Nothing was charged.")}}});i.on("payment.failed",function(e){o.disabled=!1,k("The payment did not go through"+(e&&e.error&&e.error.description?": "+e.error.description:"")+". You can try again.",!0)}),i.open()}else R(o,"Could not load the payment window. Check your connection and try again.")}):R(o,0===n.status?"Could not reach the payment service. Check your connection and try again.":n.data.error||"Could not start the payment.")})}else k("Payments are not set up yet. Add your API address as apiBase in config.js.",!0)}}),C();var f=w()[d.code];f&&x(f,!0)}else a("empty").hidden=!1;function y(e,t){return n?fetch(n+e,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)}).then(function(e){return e.json().catch(function(){return{}}).then(function(t){return{ok:e.ok,status:e.status,data:t}})}).catch(function(){return{ok:!1,status:0,data:{error:"network"}}}):Promise.resolve({ok:!1,status:0,data:{error:"not-configured"}})}function v(e,t,n){var a=document.createElement("li");n&&(a.className=n);var o=document.createElement("span"),r=document.createElement("span");return e&&e.nodeType?o.appendChild(e):o.textContent=e,t&&t.nodeType?r.appendChild(t):r.textContent=t,a.appendChild(o),a.appendChild(r),a}function g(e,t){var n=a("couponMsg");n.textContent=e,n.className="coupon-msg"+(t?" "+t:"")}function C(){var e,t,n,r=(e=Math.max(0,c.regular-c.price),t=u?u.discount:0,n=u?u.total:c.price,{regular:c.regular,offer:e,coupon:t,total:n,saved:e+t}),i=a("rows");i.textContent="";var d=document.createElement("s");if(d.textContent=o(r.regular),i.appendChild(v("Regular price",d)),r.offer>0&&i.appendChild(v("Launch offer","−"+o(r.offer),"minus")),u&&u.coupon){var l=document.createElement("span");l.appendChild(document.createTextNode("Coupon "+u.coupon+" "));var p=document.createElement("button");p.type="button",p.className="linkbtn",p.textContent="Remove",p.addEventListener("click",function(){u=null,a("couponInput").value="",g("Coupon removed."),C()}),l.appendChild(p),i.appendChild(v(l,"−"+o(r.coupon),"minus"))}i.appendChild(v("Total",o(r.total),"total"));var s=a("savedAll");s.hidden=r.saved<=0,s.textContent="You save "+o(r.saved)+" in total",a("payBtn").textContent=r.total>0?"Pay "+o(r.total):"Get my link (free)"}function k(e,t){var n=a("payMsg");n.textContent=e,n.className="msg"+(t?" err":"")}function b(){var e=new URL(c.url,location.href);return e.hash=(d.hashKey||"l")+"="+d.code,e.href}function w(){try{return JSON.parse(localStorage.getItem(r)||"{}")}catch(e){return{}}}function E(e){var t=w();t[d.code]=e;try{localStorage.setItem(r,JSON.stringify(t))}catch(e){}}function x(t,n){var o=b();a("doneUrl").value=o,a("doneOpen").href=o,a("doneOrder").textContent="Order ID: "+d.id+". Quote it if you ever need help finding your letter.",a("doneNote").textContent=n?"You already paid for this letter ("+t+"). Here is its link again.":0===String(t).indexOf("FREE")?"Your coupon covered the full price. Copy your link and send it.":"Payment confirmed ("+t+"). Copy your link and send it.",a("detailsPanel").hidden=!0,a("couponForm").style.display="none",a("done").hidden=!1,a("qrPanel").hidden=!1,a("coSub").textContent="All done. Send the link or the heart code to the person it is for.",a("qrCompany").value=e.name||"",a("qrItem").value=c.name,q(),a("doneUrl").focus({preventScroll:!0})}function S(e){return String(e||"code").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"code"}function I(e,t){var n=a("qrMsg");n.textContent=e,n.className="msg"+(t?" err":"")}function q(){if(window.PawnoteQR&&window.qrcode){try{s=PawnoteQR.make({link:a("doneUrl").value,company:a("qrCompany").value,item:a("qrItem").value})}catch(e){return s=null,I("This letter is too long to fit in a QR code. Shorten it a little and make a new one, or share the link above.",!0),void(a("qrCanvas").hidden=!0)}var e=function(){h=document.createElement("canvas"),s.draw(h);var e=a("qrCanvas"),t=Math.round(620*h.height/h.width);e.width=620,e.height=t,e.hidden=!1,e.getContext("2d").drawImage(h,0,0,620,t),I("Scan it with a phone camera to test it before you print.")};document.fonts&&document.fonts.load?document.fonts.load('800 80px "Baloo 2"').then(e,e):e()}else I("The QR code could not load. Your link above still works.",!0)}function N(){clearTimeout(m),m=setTimeout(q,350)}function _(e,t){var n=document.createElement("a");n.href=URL.createObjectURL(e),n.download=t,document.body.appendChild(n),n.click(),n.remove(),setTimeout(function(){URL.revokeObjectURL(n.href)},4e3)}function P(){return S(a("qrCompany").value)+"-"+S(a("qrItem").value)+"-heart-qr"}function L(){return d.details||{}}function R(e,t){e.disabled=!1,k(t,!0)}}();
+(function () {
+  'use strict';
+  var S = window.SITE || {}, sym = S.symbol || '₹';
+  var API = String(S.apiBase || '').replace(/\/+$/, '');
+  function $(id) { return document.getElementById(id); }
+  function fm(n) { return sym + Number(n).toLocaleString('en-IN'); }
+  var ORDER_KEY = 'pawnote-order-v1', PAID_KEY = 'pawnote-paid-v1', BUYER_KEY = 'pawnote-buyer-v1';
+
+  var order = null;
+  try { order = JSON.parse(localStorage.getItem(ORDER_KEY) || 'null'); } catch (e) {}
+  var product = order && (S.products || []).filter(function (p) { return p.id === order.product && p.status === 'live'; })[0];
+  if (!order || !product || !order.code || !/^PN-[A-Z2-9]{8}$/.test(order.id || '')) { $('empty').hidden = false; return; }
+  $('co').hidden = false;
+
+  /* ---- talking to the API ---- */
+  function api(path, body) {
+    if (!API) return Promise.resolve({ ok: false, status: 0, data: { error: 'not-configured' } });
+    return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, status: r.status, data: j }; }); })
+      .catch(function () { return { ok: false, status: 0, data: { error: 'network' } }; });
+  }
+
+  /* ---- order summary. The amount that is charged is always the server's number. ---- */
+  $('sumImg').src = product.image || ''; $('sumName').textContent = product.name; $('sumFor').textContent = order.summary || '';
+  var quote = null;   // { coupon, discount, total, label } from the server
+  function totals() {
+    var offer = Math.max(0, product.regular - product.price);
+    var cd = quote ? quote.discount : 0, total = quote ? quote.total : product.price;
+    return { regular: product.regular, offer: offer, coupon: cd, total: total, saved: offer + cd };
+  }
+  function li(label, value, cls) {
+    var l = document.createElement('li'); if (cls) l.className = cls;
+    var a = document.createElement('span'), b = document.createElement('span');
+    if (label && label.nodeType) a.appendChild(label); else a.textContent = label;
+    if (value && value.nodeType) b.appendChild(value); else b.textContent = value;
+    l.appendChild(a); l.appendChild(b); return l;
+  }
+  function setMsg(t, kind) { var m = $('couponMsg'); m.textContent = t; m.className = 'coupon-msg' + (kind ? ' ' + kind : ''); }
+  function render() {
+    var t = totals(), rows = $('rows'); rows.textContent = '';
+    var s = document.createElement('s'); s.textContent = fm(t.regular);
+    rows.appendChild(li('Regular price', s));
+    if (t.offer > 0) rows.appendChild(li('Launch offer', '−' + fm(t.offer), 'minus'));
+    if (quote && quote.coupon) {
+      var lab = document.createElement('span'); lab.appendChild(document.createTextNode('Coupon ' + quote.coupon + ' '));
+      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'linkbtn'; rm.textContent = 'Remove';
+      rm.addEventListener('click', function () { quote = null; $('couponInput').value = ''; setMsg('Coupon removed.'); render(); });
+      lab.appendChild(rm); rows.appendChild(li(lab, '−' + fm(t.coupon), 'minus'));
+    }
+    rows.appendChild(li('Total', fm(t.total), 'total'));
+    var sv = $('savedAll'); sv.hidden = t.saved <= 0; sv.textContent = 'You save ' + fm(t.saved) + ' in total';
+    $('payBtn').textContent = t.total > 0 ? 'Pay ' + fm(t.total) : 'Get my link (free)';
+  }
+  $('couponForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = $('couponInput').value.trim().toUpperCase(); if (!code) { setMsg('Enter a coupon code first.', 'err'); return; }
+    setMsg('Checking…'); $('couponApply').disabled = true;
+    api('/api/quote', { product: product.id, coupon: code }).then(function (r) {
+      $('couponApply').disabled = false;
+      if (!r.ok) { setMsg(r.data && r.data.error && r.data.error !== 'network' && r.data.error !== 'not-configured' ? r.data.error : 'Coupons are not available right now. Please try again in a moment.', 'err'); return; }
+      quote = { coupon: r.data.coupon, discount: r.data.discount, total: r.data.total, label: r.data.label };
+      setMsg((quote.label ? quote.label + ' applied. ' : 'Coupon applied. ') + 'You save ' + fm(quote.discount) + '.', 'ok'); render();
+    });
+  });
+
+  /* ---- buyer details ---- */
+  var E = { name: $('bName'), email: $('bEmail'), phone: $('bPhone'), agree: $('bAgree'), updates: $('bUpdates') };
+  try {
+    var bs = JSON.parse(localStorage.getItem(BUYER_KEY) || '{}');
+    E.name.value = bs.name || ''; E.email.value = bs.email || ''; E.phone.value = bs.phone || ''; E.updates.checked = !!bs.updates; E.agree.checked = !!bs.agree;
+  } catch (e) {}
+  function buyer() {
+    var p = E.phone.value.replace(/[^\d+]/g, '').replace(/^\+/, '');
+    if (/^\d{10}$/.test(p)) p = '91' + p;
+    return { name: E.name.value.trim(), email: E.email.value.trim(), phone: p ? '+' + p : '', agree: E.agree.checked, updates: E.updates.checked };
+  }
+  function say(t, err) { var m = $('payMsg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); }
+  function checkBuyer() {
+    var b = buyer(), bad = null, msg = '';
+    [E.name, E.email, E.phone].forEach(function (i) { i.removeAttribute('aria-invalid'); });
+    if (b.name.length < 2) { bad = E.name; msg = 'Enter your full name.'; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(b.email)) { bad = E.email; msg = 'Enter a valid email address, like you@example.com.'; }
+    else if (!/^\+\d{10,14}$/.test(b.phone)) { bad = E.phone; msg = 'Enter a valid mobile number with 10 digits.'; }
+    else if (!b.agree) { bad = E.agree; msg = 'Please tick the box to agree to the Terms and Privacy policy.'; }
+    if (bad) { if (bad.type !== 'checkbox') bad.setAttribute('aria-invalid', 'true'); say(msg, true); bad.focus(); return null; }
+    try { localStorage.setItem(BUYER_KEY, JSON.stringify({ name: b.name, email: b.email, phone: E.phone.value.trim(), agree: b.agree, updates: b.updates })); } catch (e) {}
+    return b;
+  }
+
+  /* ---- after payment ---- */
+  function linkUrl() { var u = new URL(product.url, location.href); u.hash = (order.hashKey || 'l') + '=' + order.code; return u.href; }
+  function paidMap() { try { return JSON.parse(localStorage.getItem(PAID_KEY) || '{}'); } catch (e) { return {}; } }
+  function markPaid(id) { var m = paidMap(); m[order.code] = id; try { localStorage.setItem(PAID_KEY, JSON.stringify(m)); } catch (e) {} }
+  function showDone(payId, again) {
+    var href = linkUrl();
+    $('doneUrl').value = href; $('doneOpen').href = href;
+    $('doneOrder').textContent = 'Order ID: ' + order.id + '. Quote it if you ever need help finding your letter.';
+    $('doneNote').textContent = again ? 'You already paid for this letter (' + payId + '). Here is its link again.' : (String(payId).indexOf('FREE') === 0 ? 'Your coupon covered the full price. Copy your link and send it.' : 'Payment confirmed (' + payId + '). Copy your link and send it.');
+    $('detailsPanel').hidden = true; $('couponForm').style.display = 'none'; $('done').hidden = false; $('qrPanel').hidden = false;
+    $('coSub').textContent = 'All done. Send the link or the heart code to the person it is for.';
+    $('qrCompany').value = S.name || ''; $('qrItem').value = product.name;
+    buildQR(); $('doneUrl').focus({ preventScroll: true });
+  }
+  $('doneCopy').addEventListener('click', function () {
+    var inp = $('doneUrl'), b = $('doneCopy');
+    var ok = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
+    var fb = function () { inp.focus(); inp.select(); try { document.execCommand('copy'); } catch (e) {} ok(); };
+    try { navigator.clipboard.writeText(inp.value).then(ok, fb); } catch (e) { fb(); }
+  });
+
+  /* ---- heart QR code ---- */
+  var qrObj = null, qrTimer = null, qrFull = null;
+  function slug(s) { return String(s || 'code').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'code'; }
+  function qrNote(t, err) { var m = $('qrMsg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); }
+  function buildQR() {
+    if (!window.PawnoteQR || !window.qrcode) { qrNote('The QR code could not load. Your link above still works.', true); return; }
+    try { qrObj = PawnoteQR.make({ link: $('doneUrl').value, company: $('qrCompany').value, item: $('qrItem').value }); }
+    catch (e) { qrObj = null; qrNote('This letter is too long to fit in a QR code. Shorten it a little and make a new one, or share the link above.', true); $('qrCanvas').hidden = true; return; }
+    var run = function () {
+      qrFull = document.createElement('canvas'); qrObj.draw(qrFull);
+      var pv = $('qrCanvas'), w = 620, h = Math.round(w * qrFull.height / qrFull.width);
+      pv.width = w; pv.height = h; pv.hidden = false; pv.getContext('2d').drawImage(qrFull, 0, 0, w, h);
+      qrNote('Scan it with a phone camera to test it before you print.');
+    };
+    if (document.fonts && document.fonts.load) { document.fonts.load('800 80px "Baloo 2"').then(run, run); } else { run(); }
+  }
+  function onLabel() { clearTimeout(qrTimer); qrTimer = setTimeout(buildQR, 350); }
+  $('qrCompany').addEventListener('input', onLabel); $('qrItem').addEventListener('input', onLabel);
+  function save(blob, name) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function fileBase() { return slug($('qrCompany').value) + '-' + slug($('qrItem').value) + '-heart-qr'; }
+  $('qrPng').addEventListener('click', function () {
+    if (!qrFull) return; qrFull.toBlob(function (b) { if (b) save(b, fileBase() + '.png'); else qrNote('Could not create the image.', true); }, 'image/png');
+  });
+  $('qrSvg').addEventListener('click', function () { if (qrObj) save(new Blob([qrObj.svg()], { type: 'image/svg+xml' }), fileBase() + '.svg'); });
+  if (navigator.share) {
+    $('qrShare').hidden = false;
+    $('qrShare').addEventListener('click', function () {
+      if (!qrFull) return;
+      qrFull.toBlob(function (b) {
+        var file = b && new File([b], fileBase() + '.png', { type: 'image/png' });
+        var data = { title: ($('qrCompany').value || 'Gift') + ' - ' + $('qrItem').value, text: 'Scan to open your gift', url: $('doneUrl').value };
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) data.files = [file];
+        navigator.share(data).catch(function () {});
+      }, 'image/png');
+    });
+  }
+
+  /* ---- pay: create order on the server, open Razorpay, verify the signature on the server ---- */
+  function details() { return order.details || {}; }
+  function loadRazorpay(cb) {
+    if (window.Razorpay) { cb(true); return; }
+    var sc = document.createElement('script'); sc.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    sc.onload = function () { cb(!!window.Razorpay); }; sc.onerror = function () { cb(false); };
+    document.head.appendChild(sc);
+  }
+  function fail(btn, text) { btn.disabled = false; say(text, true); }
+  $('payBtn').addEventListener('click', function () {
+    var b = checkBuyer(); if (!b) return;
+    var btn = $('payBtn');
+    if (!API) { say('Payments are not set up yet. Add your API address as apiBase in config.js.', true); return; }
+    btn.disabled = true; say('Starting your order…');
+    var coupon = quote ? quote.coupon : '';
+    api('/api/create-order', { product: product.id, coupon: coupon, orderId: order.id, buyer: { name: b.name, email: b.email, phone: b.phone, updates: b.updates } }).then(function (r) {
+      if (!r.ok) { fail(btn, r.status === 0 ? 'Could not reach the payment service. Check your connection and try again.' : (r.data.error || 'Could not start the payment.')); return; }
+      if (r.data.free) {
+        api('/api/claim-free', { product: product.id, coupon: coupon, orderId: order.id, buyer: { name: b.name, email: b.email, phone: b.phone, updates: b.updates }, link: linkUrl(), details: details() }).then(function (c) {
+          btn.disabled = false;
+          if (!c.ok) { say(c.data.error || 'Could not complete your order.', true); return; }
+          markPaid('FREE-' + coupon); showDone('FREE-' + coupon, false);
+        });
+        return;
+      }
+      loadRazorpay(function (ok) {
+        if (!ok) { fail(btn, 'Could not load the payment window. Check your connection and try again.'); return; }
+        var o = r.data;
+        var rz = new window.Razorpay({
+          key: o.key_id, order_id: o.order_id, amount: o.amount, currency: o.currency, name: S.name || 'Pawnote', description: product.name,
+          prefill: { name: b.name, email: b.email, contact: b.phone },
+          theme: { color: '#7a5ce0' },
+          handler: function (res) {
+            say('Confirming your payment…');
+            api('/api/verify-payment', { razorpay_order_id: res.razorpay_order_id, razorpay_payment_id: res.razorpay_payment_id, razorpay_signature: res.razorpay_signature, orderId: order.id, link: linkUrl(), details: details() }).then(function (v) {
+              btn.disabled = false;
+              if (!v.ok) { say('We could not confirm your payment. If you were charged, write to support with order ID ' + order.id + ' and payment ID ' + res.razorpay_payment_id + '.', true); return; }
+              markPaid(res.razorpay_payment_id); showDone(res.razorpay_payment_id, false);
+            });
+          },
+          modal: { ondismiss: function () { btn.disabled = false; say('Payment cancelled. Nothing was charged.'); } }
+        });
+        rz.on('payment.failed', function (resp) { btn.disabled = false; say('The payment did not go through' + (resp && resp.error && resp.error.description ? ': ' + resp.error.description : '') + '. You can try again.', true); });
+        rz.open();
+      });
+    });
+  });
+
+  render();
+  var already = paidMap()[order.code];
+  if (already) showDone(already, true);
+})();

@@ -7,7 +7,7 @@ window.SITE = {
   tagline: 'Little letters that come alive.',
   currency: 'INR',
   symbol: '₹',
-  supportEmail: 'pawnote.we@gmail.com',      // change to your real support email
+  supportEmail: 'support@example.com',      // change to your real support email
   apiBase: 'https://pawnote-api.pawnotekitty.workers.dev',  // the address of your Pawnote API (Cloudflare Worker), for example https://pawnote-api.yourname.workers.dev
   products: [
     {

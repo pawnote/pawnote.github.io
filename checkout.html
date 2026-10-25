@@ -1,1 +1,94 @@
-<!doctype html> <html lang="en"> <head> <meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://checkout.razorpay.com https://*.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.razorpay.com; connect-src 'self' https://*.workers.dev https://api.razorpay.com https://lumberjack.razorpay.com https://pawnote-api.pawnotekitty.workers.dev; frame-src https://api.razorpay.com https://checkout.razorpay.com; form-action 'self'; base-uri 'self'; object-src 'none'"><meta name="referrer" content="strict-origin-when-cross-origin"> <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"> <title>Checkout | Pawnote</title> <meta name="robots" content="noindex"> <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"> <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap"> <link rel="stylesheet" href="styles.css"> </head> <body> <a class="skip" href="#main">Skip to content</a> <div id="site-header"></div> <main id="main" class="wrap"> <div class="co"> <h1>Checkout</h1> <p class="sub" id="coSub">Add your details, apply a coupon if you have one, then pay.</p> <div class="panel" id="empty" hidden> <h2>Your order is not ready</h2> <p style="margin:0">We could not find a letter to check out. Go back, write your letter and press the pay button again.</p> <p style="margin:0"><a class="btn btn-primary" href="./">Back to all gifts</a></p> </div> <div class="co-grid" id="co" hidden> <aside class="co-summary" aria-label="Order summary"> <div class="panel"> <h2>Order summary</h2> <div class="sum-item"><img id="sumImg" alt=""><div><b id="sumName"></b><span id="sumFor"></span></div></div> <ul class="rows" id="rows"></ul> <div class="saved-all" id="savedAll" hidden></div> <form class="coupon-wrap" id="couponForm" novalidate style="display:flex;flex-direction:column;gap:8px"> <label for="couponInput" style="font-weight:700">Coupon code</label> <div class="coupon"> <input id="couponInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter code" maxlength="30"> <button class="btn btn-ghost" type="submit" id="couponApply">Apply</button> </div> <p class="coupon-msg" id="couponMsg" role="status"></p> </form> </div> </aside> <div class="co-form"> <div class="panel" id="detailsPanel"> <h2>Your details</h2> <p class="msg" style="min-height:0">We use these for your receipt and to help if something goes wrong. We also keep a copy of your letter so we can send you the link again if you lose it.</p> <div class="f"><label for="bName">Full name</label><input id="bName" maxlength="80" autocomplete="name" placeholder="Ethan Sharma"></div> <div class="two"> <div class="f"><label for="bEmail">Email</label><input id="bEmail" type="email" inputmode="email" maxlength="120" autocomplete="email" placeholder="you@example.com"></div> <div class="f"><label for="bPhone">Mobile number</label><input id="bPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="98765 43210"></div> </div> <label class="chk"><input type="checkbox" id="bAgree"><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a>.</span></label> <label class="chk"><input type="checkbox" id="bUpdates"><span>Email me when new designs launch (optional).</span></label> <button class="btn btn-primary btn-wide" type="button" id="payBtn">Pay</button> <p class="msg" id="payMsg" role="status"></p> </div> <div class="panel done" id="done" hidden> <h2>Your link is ready</h2> <p style="margin:0" id="doneNote"></p> <div class="linkrow"><input id="doneUrl" readonly="readonly" aria-label="Link to your letter"><button class="btn btn-primary" type="button" id="doneCopy">Copy</button></div> <p style="margin:0;color:var(--muted);font-size:.92rem">Anyone who opens this link sees your letter play straight away. Keep it safe: it is the only copy of your letter.</p> <p style="margin:0;font-weight:700" id="doneOrder"></p> <p style="margin:0"><a class="btn btn-ghost" id="doneOpen" href="#" target="_blank" rel="noopener">Open my letter</a></p> </div> <div class="panel" id="qrPanel" hidden> <h2>Your heart QR code</h2> <p style="margin:0;color:var(--muted)">Anyone who scans it opens your letter. Download it to print or share, and change the name and item shown under it.</p> <div class="two"> <div class="f"><label for="qrCompany">Company or name</label><input id="qrCompany" maxlength="40" autocomplete="off"></div> <div class="f"><label for="qrItem">Item</label><input id="qrItem" maxlength="50" autocomplete="off"></div> </div> <canvas id="qrCanvas" class="qr-canvas" hidden role="img" aria-label="Heart shaped QR code for your letter"></canvas> <div class="qr-actions"> <button class="btn btn-primary" type="button" id="qrPng">Download PNG</button> <button class="btn btn-ghost" type="button" id="qrSvg">Download SVG</button> <button class="btn btn-ghost" type="button" id="qrShare" hidden>Share</button> </div> <p class="msg" id="qrMsg" role="status"></p> </div> </div> </div> </div> </main> <div id="site-footer"></div> <script src="config.js"></script> <script src="site.js"></script> <script src="vendor/qrcode.js"></script> <script src="qr-heart.js"></script> <script src="checkout.js"></script> </body> </html> 
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://checkout.razorpay.com https://*.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.razorpay.com; connect-src 'self' https://*.workers.dev https://api.razorpay.com https://lumberjack.razorpay.com https://pawnote-api.pawnotekitty.workers.dev; frame-src https://api.razorpay.com https://checkout.razorpay.com; form-action 'self'; base-uri 'self'; object-src 'none'"><meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Checkout | Pawnote</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+<main id="main" class="wrap">
+  <div class="co">
+    <h1>Checkout</h1>
+    <p class="sub" id="coSub">Add your details, apply a coupon if you have one, then pay.</p>
+
+    <div class="panel" id="empty" hidden>
+      <h2>Your order is not ready</h2>
+      <p style="margin:0">We could not find a letter to check out. Go back, write your letter and press the pay button again.</p>
+      <p style="margin:0"><a class="btn btn-primary" href="./">Back to all gifts</a></p>
+    </div>
+
+    <div class="co-grid" id="co" hidden>
+      <aside class="co-summary" aria-label="Order summary">
+        <div class="panel">
+          <h2>Order summary</h2>
+          <div class="sum-item"><img id="sumImg" alt=""><div><b id="sumName"></b><span id="sumFor"></span></div></div>
+          <ul class="rows" id="rows"></ul>
+          <div class="saved-all" id="savedAll" hidden></div>
+          <form class="coupon-wrap" id="couponForm" novalidate style="display:flex;flex-direction:column;gap:8px">
+            <label for="couponInput" style="font-weight:700">Coupon code</label>
+            <div class="coupon">
+              <input id="couponInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter code" maxlength="30">
+              <button class="btn btn-ghost" type="submit" id="couponApply">Apply</button>
+            </div>
+            <p class="coupon-msg" id="couponMsg" role="status"></p>
+          </form>
+        </div>
+      </aside>
+
+      <div class="co-form">
+        <div class="panel" id="detailsPanel">
+          <h2>Your details</h2>
+          <p class="msg" style="min-height:0">We use these for your receipt and to help if something goes wrong. We also keep a copy of your letter so we can send you the link again if you lose it.</p>
+          <div class="f"><label for="bName">Full name</label><input id="bName" maxlength="80" autocomplete="name" placeholder="Ethan Sharma"></div>
+          <div class="two">
+            <div class="f"><label for="bEmail">Email</label><input id="bEmail" type="email" inputmode="email" maxlength="120" autocomplete="email" placeholder="you@example.com"></div>
+            <div class="f"><label for="bPhone">Mobile number</label><input id="bPhone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="98765 43210"></div>
+          </div>
+          <label class="chk"><input type="checkbox" id="bAgree"><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a>.</span></label>
+          <label class="chk"><input type="checkbox" id="bUpdates"><span>Email me when new designs launch (optional).</span></label>
+          <button class="btn btn-primary btn-wide" type="button" id="payBtn">Pay</button>
+          <p class="msg" id="payMsg" role="status"></p>
+        </div>
+
+        <div class="panel done" id="done" hidden>
+          <h2>Your link is ready</h2>
+          <p style="margin:0" id="doneNote"></p>
+          <div class="linkrow"><input id="doneUrl" readonly aria-label="Link to your letter"><button class="btn btn-primary" type="button" id="doneCopy">Copy</button></div>
+          <p style="margin:0;color:var(--muted);font-size:.92rem">Anyone who opens this link sees your letter play straight away. Keep it safe: it is the only copy of your letter.</p>
+          <p style="margin:0;font-weight:700" id="doneOrder"></p>
+          <p style="margin:0"><a class="btn btn-ghost" id="doneOpen" href="#" target="_blank" rel="noopener">Open my letter</a></p>
+        </div>
+
+        <div class="panel" id="qrPanel" hidden>
+          <h2>Your heart QR code</h2>
+          <p style="margin:0;color:var(--muted)">Anyone who scans it opens your letter. Download it to print or share, and change the name and item shown under it.</p>
+          <div class="two">
+            <div class="f"><label for="qrCompany">Company or name</label><input id="qrCompany" maxlength="40" autocomplete="off"></div>
+            <div class="f"><label for="qrItem">Item</label><input id="qrItem" maxlength="50" autocomplete="off"></div>
+          </div>
+          <canvas id="qrCanvas" class="qr-canvas" hidden role="img" aria-label="Heart shaped QR code for your letter"></canvas>
+          <div class="qr-actions">
+            <button class="btn btn-primary" type="button" id="qrPng">Download PNG</button>
+            <button class="btn btn-ghost" type="button" id="qrSvg">Download SVG</button>
+            <button class="btn btn-ghost" type="button" id="qrShare" hidden>Share</button>
+          </div>
+          <p class="msg" id="qrMsg" role="status"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="qr-heart.js"></script>
+<script src="checkout.js"></script>
+</body>
+</html>

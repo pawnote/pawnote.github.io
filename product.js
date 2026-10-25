@@ -1,1 +1,21 @@
-!function(){var e=function(e){return document.getElementById(e)},t="birthday",n=(window.SITE&&SITE.products||[]).filter(function(e){return e.id===t})[0];n&&(e("title").textContent=n.name,document.title=n.name+" | "+SITE.name,e("priceSlot").appendChild(PawnotePriceBox(n)));var o=/^#l=([A-Za-z0-9_-]+)$/.exec(location.hash||"");if(o)try{var a=function(e){for(e=e.replace(/-/g,"+").replace(/_/g,"/");e.length%4;)e+="=";for(var t=atob(e),n=new Uint8Array(t.length),o=0;o<t.length;o++)n[o]=t.charCodeAt(o);return JSON.parse((new TextDecoder).decode(n))}(o[1]);e("make").hidden=!0,e("view").hidden=!1,e("vTo").textContent="For "+a.to,e("vMsg").textContent=a.msg}catch(e){}e("pay").addEventListener("click",function(){var n=e("toName").value.trim(),o=e("msg").value.trim();if(n&&o){var a,r,i,c=PawnoteCheckout.start({product:t,code:(a={to:n,msg:o},r=(new TextEncoder).encode(JSON.stringify(a)),i="",r.forEach(function(e){i+=String.fromCharCode(e)}),btoa(i).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")),summary:"Gift for "+n,details:{For:n,Message:o}});e("note").textContent=c.opened?"Checkout opened in a new tab.":"Could not open a new tab. Allow pop-ups and try again."}else e("note").textContent="Add their name and your message first."})}();
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var PRODUCT_ID = 'birthday';                       // must match the id in config.js
+  var P = ((window.SITE && SITE.products) || []).filter(function (p) { return p.id === PRODUCT_ID; })[0];
+  if (P) { $('title').textContent = P.name; document.title = P.name + ' | ' + SITE.name; $('priceSlot').appendChild(PawnotePriceBox(P)); }
+
+  /* pack what the customer typed into the link, and read it back */
+  function encode(o) { var b = new TextEncoder().encode(JSON.stringify(o)), s = ''; b.forEach(function (x) { s += String.fromCharCode(x); }); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function decode(t) { t = t.replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; var s = atob(t), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return JSON.parse(new TextDecoder().decode(b)); }
+
+  var m = /^#l=([A-Za-z0-9_-]+)$/.exec(location.hash || '');
+  if (m) {                                           // opened from a paid link
+    try { var d = decode(m[1]); $('make').hidden = true; $('view').hidden = false; $('vTo').textContent = 'For ' + d.to; $('vMsg').textContent = d.msg; } catch (e) {}
+  }
+  $('pay').addEventListener('click', function () {   // the pay button hands over to the shared checkout page
+    var to = $('toName').value.trim(), msg = $('msg').value.trim();
+    if (!to || !msg) { $('note').textContent = 'Add their name and your message first.'; return; }
+    var r = PawnoteCheckout.start({ product: PRODUCT_ID, code: encode({ to: to, msg: msg }), summary: 'Gift for ' + to, details: { 'For': to, 'Message': msg } });
+    $('note').textContent = r.opened ? 'Checkout opened in a new tab.' : 'Could not open a new tab. Allow pop-ups and try again.';
+  });
+})();

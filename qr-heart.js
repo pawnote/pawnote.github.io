@@ -1,1 +1,116 @@
-!function(){var t=null;function n(){if(t)return t;var n,r,e,o,a=[],i=1e9,f=-1e9,l=1e9,h=-1e9;for(n=0;n<360;n++)r=n/360*2*Math.PI,e=16*Math.pow(Math.sin(r),3),o=-(13*Math.cos(r)-5*Math.cos(2*r)-2*Math.cos(3*r)-Math.cos(4*r)),a.push([e,o]),i=Math.min(i,e),f=Math.max(f,e),l=Math.min(l,o),h=Math.max(h,o);return t={pts:a,minX:i,maxX:f,minY:l,maxY:h}}function r(t,r){for(var e=n().pts,o=!1,a=e.length-1,i=0;i<e.length;a=i++)e[i][1]>r!=e[a][1]>r&&t<(e[a][0]-e[i][0])*(r-e[i][1])/(e[a][1]-e[i][1])+e[i][0]&&(o=!o);return o}function e(t,n){for(var e=0;e<=20;e++){var o=2*n*e/20-n;if(!(r(o,t-n)&&r(o,t+n)&&r(-n,t+o)&&r(n,t+o)))return!1}return!0}function o(t){return String(t).replace(/[&<>"]/g,function(t){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[t]})}window.PawnoteQR={make:function(t){var a=null,i="";if(["H","Q","M","L"].some(function(n){try{var r=qrcode(0,n);return r.addData(t.link),r.make(),a=r,i=n,!0}catch(t){return!1}}),!a)throw new Error("too long");var f,l,h=a.getModuleCount(),u=n(),c=function(){for(var t={h:0,cy:0},n=-6;n<=6;n+=.25){for(var r=0,o=14,a=0;a<14;a++){var i=(r+o)/2;e(n,i)?r=i:o=i}r>t.h&&(t={h:r,cy:n})}return t}(),s=2*c.h*.97,m=s/(h+4),d=-s/2,x=c.cy-s/2,M=function(t){for(var n=2166136261,r=0;r<t.length;r++)n^=t.charCodeAt(r),n=Math.imul(n,16777619);return function(){var t=n+=1831565813;return t=Math.imul(t^t>>>15,1|t),(((t^=t+Math.imul(t^t>>>7,61|t))^t>>>14)>>>0)/4294967296}}(t.link),v=[],g=[];for(f=0;f<h;f++)for(l=0;l<h;l++)a.isDark(f,l)&&v.push([d+(l+2)*m,x+(f+2)*m]);for(var p=Math.floor((u.minX-d)/m),y=Math.ceil((u.maxX-d)/m),w=Math.floor((u.minY-x)/m),S=Math.ceil((u.maxY-x)/m),X=.22*m,Y=w;Y<=S;Y++)for(var k=p;k<=y;k++)if(!(k>=0&&k<h+4&&Y>=0&&Y<h+4)){var T=d+k*m,b=x+Y*m;r(T+X,b+X)&&r(T+m-X,b+X)&&r(T+X,b+m-X)&&r(T+m-X,b+m-X)&&M()<.5&&g.push([T+m/2,b+m/2])}var E=u.maxX-u.minX,P=u.maxY-u.minY,z=Math.min(4e3/(1.12*E),Math.max(1500/(1.12*E),8/m)),B=.06*E*z,C=Math.round(E*z+2*B),G=B,L=P*z,R=String(t.company||"").trim().slice(0,40),j=String(t.item||"").trim().slice(0,50),q=.075*C,A=.052*C,D=.036*C,Q=Math.round(G+L+.7*B+1.25*q+1.35*A+1.8*D+.6*B);function U(t){return Math.round((t-u.minX)*z+B)}function H(t){return Math.round((t-u.minY)*z+G)}var I=C/2,J=G+L+.7*B+q,O=J+1.35*A,W=O+1.8*D,Z='"Baloo 2","Trebuchet MS",system-ui,sans-serif',F="#e0245e",K="#5b3fc4";return{width:C,height:Q,modules:h,ecc:i,modulePx:Math.round(m*z*10)/10,draw:function(t){return t.width=C,t.height=Q,function(t){t.fillStyle="#ffffff",t.fillRect(0,0,C,Q);var n=t.createLinearGradient(U(u.minX),H(u.minY),U(u.maxX),H(u.maxY));n.addColorStop(0,F),n.addColorStop(1,K),t.beginPath(),u.pts.forEach(function(n,r){r?t.lineTo(U(n[0]),H(n[1])):t.moveTo(U(n[0]),H(n[1]))}),t.closePath(),t.fillStyle="#fff5f9",t.fill(),t.lineWidth=Math.max(4,.01*C),t.strokeStyle=n,t.lineJoin="round",t.stroke(),t.fillStyle=n,v.forEach(function(n){var r=U(n[0]),e=H(n[1]);t.fillRect(r,e,U(n[0]+m)-r,H(n[1]+m)-e)});var r=m*z*.34;t.beginPath(),g.forEach(function(n){var e=U(n[0]),o=H(n[1]);t.moveTo(e+r,o),t.arc(e,o,r,0,6.2832)}),t.fill(),t.textAlign="center",t.fillStyle="#241f3d",t.font="800 "+q+"px "+Z,R&&t.fillText(R,I,J,.9*C),t.fillStyle="#4a4470",t.font="700 "+A+"px "+Z,j&&t.fillText(j,I,O,.9*C),t.fillStyle="#7a74a0",t.font="600 "+D+"px "+Z,t.fillText("Scan to open your gift",I,W,.9*C)}(t.getContext("2d")),t},svg:function(){var t="",n=function(t){return Math.round(100*t)/100};v.forEach(function(n){var r=U(n[0]),e=H(n[1]),o=U(n[0]+m)-r,a=H(n[1]+m)-e;t+="M"+r+" "+e+"h"+o+"v"+a+"h-"+o+"z"});var r=n(m*z*.34);g.forEach(function(e){var o=U(e[0]),a=H(e[1]);t+="M"+n(o-r)+" "+a+"a"+r+" "+r+" 0 1 0 "+n(2*r)+" 0a"+r+" "+r+" 0 1 0 -"+n(2*r)+" 0z"});var e=u.pts.map(function(t,n){return(n?"L":"M")+U(t[0])+" "+H(t[1])}).join("")+"Z";return'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+C+" "+Q+'" width="'+C+'" height="'+Q+'"><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="'+U(u.minX)+'" y1="'+H(u.minY)+'" x2="'+U(u.maxX)+'" y2="'+H(u.maxY)+'"><stop offset="0" stop-color="'+F+'"/><stop offset="1" stop-color="'+K+'"/></linearGradient></defs><rect width="'+C+'" height="'+Q+'" fill="#fff"/><path d="'+e+'" fill="#fff5f9" stroke="url(#g)" stroke-width="'+Math.max(4,Math.round(.01*C))+'" stroke-linejoin="round"/><path d="'+t+'" fill="url(#g)"/>'+(R?'<text x="'+I+'" y="'+n(J)+'" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="800" font-size="'+n(q)+'" fill="#241f3d">'+o(R)+"</text>":"")+(j?'<text x="'+I+'" y="'+n(O)+'" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="700" font-size="'+n(A)+'" fill="#4a4470">'+o(j)+"</text>":"")+'<text x="'+I+'" y="'+n(W)+'" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="600" font-size="'+n(D)+'" fill="#7a74a0">Scan to open your gift</text></svg>'}}}}}();
+/* Heart-shaped QR code. The real, scannable QR code sits in the middle of the heart.
+   The rest of the heart is filled with decorative dots, kept clear of the code by a quiet margin.
+   PawnoteQR.make({ link, company, item }) -> { draw(canvas), svg(), size, modules, ecc } */
+(function () {
+  var POLY = null;
+  function heart() {
+    if (POLY) return POLY;
+    var pts = [], i, t, x, y, minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    for (i = 0; i < 360; i++) {
+      t = i / 360 * 2 * Math.PI;
+      x = 16 * Math.pow(Math.sin(t), 3);
+      y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));   // y points down
+      pts.push([x, y]); minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    }
+    POLY = { pts: pts, minX: minX, maxX: maxX, minY: minY, maxY: maxY };
+    return POLY;
+  }
+  function inside(x, y) {
+    var p = heart().pts, c = false, j = p.length - 1;
+    for (var i = 0; i < p.length; j = i++) {
+      if (((p[i][1] > y) !== (p[j][1] > y)) && (x < (p[j][0] - p[i][0]) * (y - p[i][1]) / (p[j][1] - p[i][1]) + p[i][0])) c = !c;
+    }
+    return c;
+  }
+  function squareFits(cy, h) {
+    for (var k = 0; k <= 20; k++) {
+      var s = -h + (2 * h) * k / 20;
+      if (!inside(s, cy - h) || !inside(s, cy + h) || !inside(-h, cy + s) || !inside(h, cy + s)) return false;
+    }
+    return true;
+  }
+  /* the biggest square that fits inside the heart */
+  function bestSquare() {
+    var best = { h: 0, cy: 0 };
+    for (var cy = -6; cy <= 6; cy += 0.25) {
+      var lo = 0, hi = 14;
+      for (var it = 0; it < 14; it++) { var mid = (lo + hi) / 2; if (squareFits(cy, mid)) lo = mid; else hi = mid; }
+      if (lo > best.h) best = { h: lo, cy: cy };
+    }
+    return best;
+  }
+  function seeded(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return function () { h += 0x6D2B79F5; var t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function make(o) {
+    var qr = null, ecc = '';
+    ['H', 'Q', 'M', 'L'].some(function (lv) {
+      try { var q = qrcode(0, lv); q.addData(o.link); q.make(); qr = q; ecc = lv; return true; } catch (e) { return false; }
+    });
+    if (!qr) throw new Error('too long');
+    var n = qr.getModuleCount(), Q = 2, hp = heart(), sq = bestSquare();
+    var L = sq.h * 2 * 0.97, M = L / (n + 2 * Q), x0 = -L / 2, y0 = sq.cy - L / 2;
+    var rnd = seeded(o.link), core = [], decor = [];
+    var r, c;
+    for (r = 0; r < n; r++) for (c = 0; c < n; c++) if (qr.isDark(r, c)) core.push([x0 + (c + Q) * M, y0 + (r + Q) * M]);
+    var ix0 = Math.floor((hp.minX - x0) / M), ix1 = Math.ceil((hp.maxX - x0) / M), iy0 = Math.floor((hp.minY - y0) / M), iy1 = Math.ceil((hp.maxY - y0) / M);
+    var e = M * 0.22;
+    for (var iy = iy0; iy <= iy1; iy++) for (var ix = ix0; ix <= ix1; ix++) {
+      if (ix >= 0 && ix < n + 2 * Q && iy >= 0 && iy < n + 2 * Q) continue;      // the code and its quiet margin
+      var X = x0 + ix * M, Y = y0 + iy * M;
+      if (!(inside(X + e, Y + e) && inside(X + M - e, Y + e) && inside(X + e, Y + M - e) && inside(X + M - e, Y + M - e))) continue;
+      if (rnd() < 0.5) decor.push([X + M / 2, Y + M / 2]);
+    }
+    var hw = hp.maxX - hp.minX, hh = hp.maxY - hp.minY;
+    var S = Math.min(4000 / (hw * 1.12), Math.max(1500 / (hw * 1.12), 8 / M));      // pixels per unit
+    var pad = hw * 0.06 * S, W = Math.round(hw * S + pad * 2), top = pad, heartH = hh * S;
+    var company = String(o.company || '').trim().slice(0, 40), item = String(o.item || '').trim().slice(0, 50);
+    var fs1 = W * 0.075, fs2 = W * 0.052, fs3 = W * 0.036;
+    var Ht = Math.round(top + heartH + pad * 0.7 + fs1 * 1.25 + fs2 * 1.35 + fs3 * 1.8 + pad * 0.6);
+    function PX(u) { return Math.round((u - hp.minX) * S + pad); }
+    function PY(u) { return Math.round((u - hp.minY) * S + top); }
+    var cx = W / 2, ty1 = top + heartH + pad * 0.7 + fs1, ty2 = ty1 + fs2 * 1.35, ty3 = ty2 + fs3 * 1.8;
+    var FONT = '"Baloo 2","Trebuchet MS",system-ui,sans-serif';
+    var GA = '#e0245e', GB = '#5b3fc4';
+
+    function drawTo(ctx) {
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, Ht);
+      var g = ctx.createLinearGradient(PX(hp.minX), PY(hp.minY), PX(hp.maxX), PY(hp.maxY)); g.addColorStop(0, GA); g.addColorStop(1, GB);
+      ctx.beginPath(); hp.pts.forEach(function (p, i) { if (i) ctx.lineTo(PX(p[0]), PY(p[1])); else ctx.moveTo(PX(p[0]), PY(p[1])); }); ctx.closePath();
+      ctx.fillStyle = '#fff5f9'; ctx.fill(); ctx.lineWidth = Math.max(4, W * 0.01); ctx.strokeStyle = g; ctx.lineJoin = 'round'; ctx.stroke();
+      ctx.fillStyle = g;
+      core.forEach(function (m) { var a = PX(m[0]), b = PY(m[1]); ctx.fillRect(a, b, PX(m[0] + M) - a, PY(m[1] + M) - b); });
+      var rr = M * S * 0.34; ctx.beginPath();
+      decor.forEach(function (m) { var a = PX(m[0]), b = PY(m[1]); ctx.moveTo(a + rr, b); ctx.arc(a, b, rr, 0, 6.2832); });
+      ctx.fill();
+      ctx.textAlign = 'center'; ctx.fillStyle = '#241f3d';
+      ctx.font = '800 ' + fs1 + 'px ' + FONT; if (company) ctx.fillText(company, cx, ty1, W * 0.9);
+      ctx.fillStyle = '#4a4470'; ctx.font = '700 ' + fs2 + 'px ' + FONT; if (item) ctx.fillText(item, cx, ty2, W * 0.9);
+      ctx.fillStyle = '#7a74a0'; ctx.font = '600 ' + fs3 + 'px ' + FONT; ctx.fillText('Scan to open your gift', cx, ty3, W * 0.9);
+    }
+    function svg() {
+      var d = '', f = function (v) { return Math.round(v * 100) / 100; };
+      core.forEach(function (m) { var a = PX(m[0]), b = PY(m[1]), w = PX(m[0] + M) - a, h = PY(m[1] + M) - b; d += 'M' + a + ' ' + b + 'h' + w + 'v' + h + 'h-' + w + 'z'; });
+      var rr = f(M * S * 0.34);
+      decor.forEach(function (m) { var a = PX(m[0]), b = PY(m[1]); d += 'M' + f(a - rr) + ' ' + b + 'a' + rr + ' ' + rr + ' 0 1 0 ' + f(2 * rr) + ' 0a' + rr + ' ' + rr + ' 0 1 0 -' + f(2 * rr) + ' 0z'; });
+      var outline = hp.pts.map(function (p, i) { return (i ? 'L' : 'M') + PX(p[0]) + ' ' + PY(p[1]); }).join('') + 'Z';
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + Ht + '" width="' + W + '" height="' + Ht + '">' +
+        '<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="' + PX(hp.minX) + '" y1="' + PY(hp.minY) + '" x2="' + PX(hp.maxX) + '" y2="' + PY(hp.maxY) + '"><stop offset="0" stop-color="' + GA + '"/><stop offset="1" stop-color="' + GB + '"/></linearGradient></defs>' +
+        '<rect width="' + W + '" height="' + Ht + '" fill="#fff"/><path d="' + outline + '" fill="#fff5f9" stroke="url(#g)" stroke-width="' + Math.max(4, Math.round(W * 0.01)) + '" stroke-linejoin="round"/>' +
+        '<path d="' + d + '" fill="url(#g)"/>' +
+        (company ? '<text x="' + cx + '" y="' + f(ty1) + '" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="800" font-size="' + f(fs1) + '" fill="#241f3d">' + esc(company) + '</text>' : '') +
+        (item ? '<text x="' + cx + '" y="' + f(ty2) + '" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="700" font-size="' + f(fs2) + '" fill="#4a4470">' + esc(item) + '</text>' : '') +
+        '<text x="' + cx + '" y="' + f(ty3) + '" text-anchor="middle" font-family="Baloo 2,Trebuchet MS,sans-serif" font-weight="600" font-size="' + f(fs3) + '" fill="#7a74a0">Scan to open your gift</text></svg>';
+    }
+    return {
+      width: W, height: Ht, modules: n, ecc: ecc, modulePx: Math.round(M * S * 10) / 10,
+      draw: function (canvas) { canvas.width = W; canvas.height = Ht; drawTo(canvas.getContext('2d')); return canvas; },
+      svg: svg
+    };
+  }
+  window.PawnoteQR = { make: make };
+})();
