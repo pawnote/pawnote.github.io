@@ -8,7 +8,7 @@ window.SITE = {
   currency: 'INR',
   symbol: '₹',
   supportEmail: 'support@example.com',      // change to your real support email
-  apiBase: 'https://pawnote-api.pawnotekitty.workers.dev',                              // the address of your Pawnote API (Cloudflare Worker), for example https://pawnote-api.yourname.workers.dev
+  apiBase: 'https://pawnote-api.pawnotekitty.workers.dev',  // the address of your Pawnote API (Cloudflare Worker), for example https://pawnote-api.yourname.workers.dev
   products: [
     {
       id: 'kitty', status: 'live', name: 'Kitty Letter', tag: 'Animated page',
