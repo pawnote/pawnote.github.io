@@ -90,7 +90,7 @@
   /* ---- after payment ---- */
   function linkUrl() { var u = new URL(product.url, location.href); u.hash = (order.hashKey || 'l') + '=' + order.code; return u.href; }
   function paidMap() { try { return JSON.parse(localStorage.getItem(PAID_KEY) || '{}'); } catch (e) { return {}; } }
-  function markPaid(id) { var m = paidMap(); m[order.code] = id; try { localStorage.setItem(PAID_KEY, JSON.stringify(m)); } catch (e) {} }
+  function markPaid(id) { var m = paidMap(); m[order.id] = id; try { localStorage.setItem(PAID_KEY, JSON.stringify(m)); } catch (e) {} }
   function showDone(payId, again) {
     var href = linkUrl();
     $('doneUrl').value = href; $('doneOpen').href = href;
@@ -101,6 +101,10 @@
     $('qrCompany').value = S.name || ''; $('qrItem').value = product.name;
     buildQR(); $('doneUrl').focus({ preventScroll: true });
   }
+  $('doneNew').addEventListener('click', function () {
+    try { localStorage.removeItem(ORDER_KEY); } catch (e) {}
+    location.href = product.url;
+   });
   $('doneCopy').addEventListener('click', function () {
     var inp = $('doneUrl'), b = $('doneCopy');
     var ok = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
@@ -197,6 +201,6 @@
   });
 
   render();
-  var already = paidMap()[order.code];
+  var already = paidMap()[order.id];
   if (already) showDone(already, true);
 })();
