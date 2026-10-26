@@ -20,8 +20,8 @@
     start: function (o) {
       var order = { id: newOrderId(), product: o.product, code: o.code, summary: o.summary || '', details: o.details || {}, letter: o.letter || null, t: Date.now() };
       try { localStorage.setItem('pawnote-order-v1', JSON.stringify(order)); } catch (e) { return { opened: false, error: 'storage' }; }
-      var w = null; try { w = window.open('checkout.html', '_blank'); } catch (e) {}
-      return { opened: !!w };
+      window.location.href = 'checkout.html';
+      return { opened: true };
     }
   };
 })();
