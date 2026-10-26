@@ -529,23 +529,42 @@
       details: { 'Letter for': d.to, 'Letter from': d.from, 'Title': d.title, 'Letter text': d.body, 'Sign-off': d.sign, 'Question': d.q, 'Line shown after yes': d.yes }
     });
     if (res.error) { say('Your browser blocked saving the order. Allow site storage and try again.', true); return; }
-    var w = res.opened;
-    $('coLink').hidden = false;
-    say(w ? 'Checkout opened in a new tab. Finish there to get your link.' : 'Your order is ready. Use the link below to open checkout.');
+    say('Taking you to checkout\u2026');
   });
   window.addEventListener('hashchange', function () { location.reload(); });
 
   /* ================= INIT ================= */
-  var shared = null;
-  try { var m = /^#l=([A-Za-z0-9_-]+)$/.exec(location.hash || ''); if (m) shared = decode(m[1]); } catch (e) { shared = null; }
-  restore();
-  refresh(false);
-  kitten.mount($('makerHost'));
-  kitten.reset({ x: 0, carry: true });
-  if (shared) {
+  function begin(shared) {
+    restore();
+    refresh(false);
+    kitten.mount($('makerHost'));
+    kitten.reset({ x: 0, carry: true });
+    if (shared) {
+      $('maker').hidden = true;
+      $('back').textContent = 'Make your own';
+      $('edit2').textContent = 'Make your own';
+      startPlay(shared);
+    }
+  }
+  var hash = location.hash || '', mL = /^#l=([A-Za-z0-9_-]+)$/.exec(hash), mK = /^#k=([A-Za-z0-9]{6,12})$/.exec(hash);
+  if (mK) {
+    /* short link: fetch the letter from the Pawnote API, then play it */
+    var api = String((window.SITE && SITE.apiBase) || '').replace(/\/+$/, '');
     $('maker').hidden = true;
-    $('back').textContent = 'Make your own';
-    $('edit2').textContent = 'Make your own';
-    startPlay(shared);
+    var wait = document.createElement('p');
+    wait.textContent = 'Opening your letter\u2026';
+    wait.style.cssText = 'position:fixed;inset:0;display:grid;place-items:center;margin:0;font:700 1.3rem var(--font-display);color:var(--ink);background:var(--bg)';
+    document.body.appendChild(wait);
+    var fail = function () { wait.remove(); $('maker').hidden = false; begin(null); say('This letter link could not be opened. Check the link or ask the sender for a new one.', true); };
+    if (!api) { fail(); }
+    else {
+      fetch(api + '/api/letter/' + mK[1]).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+        var d = decode(j.code); if (!d) throw 0; wait.remove(); begin(d);
+      }).catch(fail);
+    }
+  } else {
+    var shared = null;
+    try { if (mL) shared = decode(mL[1]); } catch (e) { shared = null; }
+    begin(shared);
   }
 })();

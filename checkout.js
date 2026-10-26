@@ -88,11 +88,12 @@
   }
 
   /* ---- after payment ---- */
+  function pageUrl() { return new URL(product.url, location.href).href.split('#')[0].split('?')[0]; }
   function linkUrl() { var u = new URL(product.url, location.href); u.hash = (order.hashKey || 'l') + '=' + order.code; return u.href; }
   function paidMap() { try { return JSON.parse(localStorage.getItem(PAID_KEY) || '{}'); } catch (e) { return {}; } }
-  function markPaid(id) { var m = paidMap(); m[order.id] = id; try { localStorage.setItem(PAID_KEY, JSON.stringify(m)); } catch (e) {} }
-  function showDone(payId, again) {
-    var href = linkUrl();
+  function markPaid(id, link) { var m = paidMap(); m[order.id] = { p: id, l: link || '' }; try { localStorage.setItem(PAID_KEY, JSON.stringify(m)); } catch (e) {} }
+  function showDone(payId, again, link) {
+    var href = link || linkUrl();
     $('doneUrl').value = href; $('doneOpen').href = href;
     $('doneOrder').textContent = 'Order ID: ' + order.id + '. Quote it if you ever need help finding your letter.';
     $('doneNote').textContent = again ? 'You already paid for this letter (' + payId + '). Here is its link again.' : (String(payId).indexOf('FREE') === 0 ? 'Your coupon covered the full price. Copy your link and send it.' : 'Payment confirmed (' + payId + '). Copy your link and send it.');
@@ -104,7 +105,7 @@
   $('doneNew').addEventListener('click', function () {
     try { localStorage.removeItem(ORDER_KEY); } catch (e) {}
     location.href = product.url;
-   });
+  });
   $('doneCopy').addEventListener('click', function () {
     var inp = $('doneUrl'), b = $('doneCopy');
     var ok = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
@@ -170,10 +171,10 @@
     api('/api/create-order', { product: product.id, coupon: coupon, orderId: order.id, buyer: { name: b.name, email: b.email, phone: b.phone, updates: b.updates } }).then(function (r) {
       if (!r.ok) { fail(btn, r.status === 0 ? 'Could not reach the payment service. Check your connection and try again.' : (r.data.error || 'Could not start the payment.')); return; }
       if (r.data.free) {
-        api('/api/claim-free', { product: product.id, coupon: coupon, orderId: order.id, buyer: { name: b.name, email: b.email, phone: b.phone, updates: b.updates }, link: linkUrl(), details: details() }).then(function (c) {
+        api('/api/claim-free', { product: product.id, coupon: coupon, orderId: order.id, buyer: { name: b.name, email: b.email, phone: b.phone, updates: b.updates }, link: linkUrl(), code: order.code, page: pageUrl(), details: details() }).then(function (c) {
           btn.disabled = false;
           if (!c.ok) { say(c.data.error || 'Could not complete your order.', true); return; }
-          markPaid('FREE-' + coupon); showDone('FREE-' + coupon, false);
+          markPaid('FREE-' + coupon, c.data.link); showDone('FREE-' + coupon, false, c.data.link);
         });
         return;
       }
@@ -186,10 +187,10 @@
           theme: { color: '#7a5ce0' },
           handler: function (res) {
             say('Confirming your payment…');
-            api('/api/verify-payment', { razorpay_order_id: res.razorpay_order_id, razorpay_payment_id: res.razorpay_payment_id, razorpay_signature: res.razorpay_signature, orderId: order.id, link: linkUrl(), details: details() }).then(function (v) {
+            api('/api/verify-payment', { razorpay_order_id: res.razorpay_order_id, razorpay_payment_id: res.razorpay_payment_id, razorpay_signature: res.razorpay_signature, orderId: order.id, link: linkUrl(), code: order.code, page: pageUrl(), details: details() }).then(function (v) {
               btn.disabled = false;
               if (!v.ok) { say('We could not confirm your payment. If you were charged, write to support with order ID ' + order.id + ' and payment ID ' + res.razorpay_payment_id + '.', true); return; }
-              markPaid(res.razorpay_payment_id); showDone(res.razorpay_payment_id, false);
+              markPaid(res.razorpay_payment_id, v.data.link); showDone(res.razorpay_payment_id, false, v.data.link);
             });
           },
           modal: { ondismiss: function () { btn.disabled = false; say('Payment cancelled. Nothing was charged.'); } }
@@ -202,5 +203,5 @@
 
   render();
   var already = paidMap()[order.id];
-  if (already) showDone(already, true);
+  if (already) { if (typeof already === 'string') already = { p: already, l: '' }; showDone(already.p, true, already.l); }
 })();
